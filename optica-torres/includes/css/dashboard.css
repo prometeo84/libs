@@ -1,0 +1,26 @@
+.grid-container {
+  /*grid-template-rows: 170px;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  flex-direction: column;
+  min-height: 100vh;*/
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 10px;
+  background-color: #ffffff;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid-container > div {
+  text-align: center;
+  font-size: 20px;
+}
+.grid-container img {
+  max-height: 125px;
+  max-width: 250px;
+}
+.img-circle {
+    border-radius: 50%;
+}
