@@ -63,9 +63,10 @@ function usernameValidate(evt) {
     return false;
   }
 }
-function emailValidate(input.toString()) {
+function emailValidate(input) {
+  let email = input.toString();
   var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-  if (input.match(validRegex)) {
+  if (email.match(validRegex)) {
     return true;
   } else {
     alert("Correo Electrónico Invalido!");
