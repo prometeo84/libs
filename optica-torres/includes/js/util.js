@@ -63,13 +63,14 @@ function usernameValidate(evt) {
     return false;
   }
 }
-function emailValidate(input) {
+function emailValidate(input, id) {
   let email = input.toString();
   var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   if (email.match(validRegex)) {
     return true;
   } else {
     alert("Correo Electrónico Invalido!");
+    $('#'+id).val('');
     return false;
   }
 }
