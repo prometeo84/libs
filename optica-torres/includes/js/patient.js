@@ -9,13 +9,12 @@ function readCity(provinceName) {
             if (provinceName == '') {
                 alertPopUp(translate['advertice'], translate['catalogs_province_empty'], 'warning');
                 xhr.abort();
-                return false;
             }
         },
         success: function (data) {
             $('#a_city').html(data)
         },
-        error: function () {
+        error: function (xhr, status) {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
         }
     });
@@ -36,7 +35,7 @@ function modSearchPatient() {
         success: function (data) {
             $('#formSearchPatient').html(data)
         },
-        error: function () {
+        error: function (xhr, status) {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
         }
     });
@@ -45,8 +44,8 @@ function modSearchPatient() {
 }
 function patientFrame() {
     var patientId = $('#patient_id').val();
-    $('.tabs').css('height', '10rem');
-    $('.tab-content').css('height', '75%');
+    //$('.tabs').css('height', '10rem'); ya cambiado
+    //$('.tab-content').css('height', '75%'); ya cambiado
     if (patientId == '') {
         $('#TableAnamnesis').hide();
     } else {
@@ -57,16 +56,16 @@ function showPatientInsertFrame() {
     var id = "";
     $('#modSearchPatient').modal('hide');
     loadTablePatient(id, 'INSERT');
-    $('.tabs').css('height', '65rem');
-    $('.tab-content').css('height', '96%');
+    //$('.tabs').css('height', '65rem');
+    //$('.tab-content').css('height', '96%');
     $('#TableAnamnesis').show();
 }
 function showPatientEditFrame(id) {
     $('#modSearchPatient').modal('hide');
     $('#patient_id').val(id);
     loadTablePatient(id, 'EDIT');
-    $('.tabs').css('height', '65rem');
-    $('.tab-content').css('height', '96%');
+    //$('.tabs').css('height', '65rem');
+    //$('.tab-content').css('height', '96%');
     $('#TableAnamnesis').show();
 }
 function savePatient() {
@@ -127,7 +126,7 @@ function savePatient() {
     values['family_background'] = family_background;
     values['habits'] = habits;
     values['observations'] = observations;
-    if (name == '' || lastname == '' || birthdate == '' || genre == '' || id_number == '' || province == '' || city == '' || address == '' || mobile == '' || email == '' || type_contingency == '' || health_insurance == '') {
+    if (name == '' || lastname == '' || birthdate == '' || genre == '' || id_number == '' || province == '' || city == '' || address == '' || mobile == '' || email == '' || type_contingency == '' || health_insurance == '' || allergy == '' || personal_history == '' || surgery == '' || medication == '' || ophthalmic_history == '' || family_background == '' || habits == '' || observations == '') {
         alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
         return false;
     } else {
@@ -136,10 +135,10 @@ function savePatient() {
             url: funcion,
             data: values,
             cache: false,
-            error: function () {
+            error: function (xhr, status) {
                 alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
             },
-            complete: function () {
+            complete: function (xhr, status) {
                 alertPopUp(translate['success'], translate['insert_register'], 'success');
                 patientFrame();
             }
@@ -207,7 +206,7 @@ function editPatient() {
     values['family_background'] = family_background;
     values['habits'] = habits;
     values['observations'] = observations;
-    if (name == '' || lastname == '' || birthdate == '' || genre == '' || id_number == '' || province == '' || city == '' || address == '' || mobile == '' || email == '' || type_contingency == '' || health_insurance == '') {
+    if (name == '' || lastname == '' || birthdate == '' || genre == '' || id_number == '' || province == '' || city == '' || address == '' || mobile == '' || email == '' || type_contingency == '' || health_insurance == '' || allergy == '' || personal_history == '' || surgery == '' || medication == '' || ophthalmic_history == '' || family_background == '' || habits == '' || observations == '') {
         alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
         return false;
     } else {
@@ -216,10 +215,10 @@ function editPatient() {
             url: funcion,
             data: values,
             cache: false,
-            error: function () {
+            error: function (xhr, status) {
                 alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
             },
-            complete: function () {
+            complete: function (xhr, status) {
                 alertPopUp(translate['success'], translate['update_register'], 'success');
                 patientFrame();
             }
@@ -242,7 +241,6 @@ function loadTableSearch(offset_pag, active_pag) {
             if (s_id_number == '' && s_lastname == '' && s_name == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 xhr.abort();
-                return false;
             } else {
                 $('#loading').show();
             }
@@ -251,7 +249,7 @@ function loadTableSearch(offset_pag, active_pag) {
             $('#loading').hide();
             $('#tablaSearchPatient').html(data);
         },
-        error: function () {
+        error: function (xhr, status) {
             $('#loading').hide();
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
         }
@@ -265,13 +263,13 @@ function loadTablePatient(id, mode) {
         url: funcion,
         data: { function: 'loadTablePatient', id: id, mode: mode },
         cache: false,
-        error: function () {
+        error: function (xhr, status) {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
         },
         success: function (data) {
             $('#tab-content-1').html(data);
         },
-        complete: function () {
+        complete: function (xhr, status) {
             alertPopUp(translate['success'], translate['information_success'], 'success');
         }
     });
@@ -287,4 +285,36 @@ function closeModalcloseModalOptometry() {
 
 function sessionPatient() {
     $('#patient_id').val('');
+}
+
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    showDiv(tabName);
+    evt.currentTarget.className += " active";
+}
+
+function showDiv(tabName) {
+    switch (tabName) {
+        case 'tab2':
+            loadTableOptometry();
+            break;
+        case 'tab3':
+            loadTableEyePhysicalExam();
+            break;
+        case 'tab4':
+            loadTableAppointmentScheduling();
+            break;
+        case 'tab5':
+            loadRecipe();
+            break;
+    }
 }
