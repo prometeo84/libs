@@ -1,5 +1,5 @@
 function loadTable(offset_pag, active_pag) {
-    var limite_pag = 5;
+    var limite_pag = 10;
     var c_material = $('#c_material').val();
     var c_lens_type = $('#c_lens_type').val();
     var c_treatment = $('#c_treatment').val();
