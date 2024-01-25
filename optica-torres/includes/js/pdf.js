@@ -200,6 +200,33 @@ function newPDF(type_pdf, op) {
                 validate = false;
             }
             break;
+        case 'ANAMNESIS_POR_USUARIO':
+            var patient_id = '+Q==';
+            var id_number = 0;
+            var username = $('#username').val();
+            var s_date = $('#s_date').val();
+            var f_date = $('#f_date').val();
+            var branch = $('#branch').val();
+            values['id_number'] = id_number;
+            values['patient_id'] = patient_id;
+            values['username'] = username;
+            values['s_date'] = s_date;
+            values['f_date'] = f_date;
+            values['branch'] = branch;
+            var sDate = new Date(s_date);
+            var fDate = new Date(f_date);
+            var millisecondsPerDay = 1000 * 60 * 60 * 24;
+            var millisBetween = fDate.getTime() - sDate.getTime();
+            var days = millisBetween / millisecondsPerDay;
+            if (days < 0) {
+                alertPopUp(translate['advertice'], translate['report_invalid_date'], 'warning');
+                validate = false;
+            }
+            if (username == '') {
+                alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
+                validate = false;
+            }
+            break;
     }
     if (validate) {
         $.ajax({

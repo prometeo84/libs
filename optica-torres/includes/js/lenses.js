@@ -1,20 +1,22 @@
 function loadTable(offset_pag, active_pag) {
     var limite_pag = 5;
-    var c_catalogs = $('#c_catalogs').val();
-    var c_name = $('#c_name').val();
-    var c_value = $('#c_value').val();
+    var c_material = $('#c_material').val();
+    var c_lens_type = $('#c_lens_type').val();
+    var c_treatment = $('#c_treatment').val();
+    var c_photo_sensitivity = $('#c_photo_sensitivity').val();
+    var c_transition = $('#c_transition').val();
     var c_active = $('#c_active').val();
-    var funcion = '../controller/catalogs_controller.php';
+    var funcion = '../controller/lenses_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'loadTableCatalogs', limit: limite_pag, offset: offset_pag, active_p: active_pag, catalog_id: c_catalogs, name: c_name, value: c_value, active: c_active },
+        data: { function: 'loadTableLenses', limit: limite_pag, offset: offset_pag, active_p: active_pag, material: c_material, lens_type: c_lens_type, treatment: c_treatment, photo_sensitivity: c_photo_sensitivity, transition: c_transition, active: c_active },
         cache: false,
         beforeSend: function () {
             $('#loading').show();
         },
         success: function (data) {
-            $('#tableCatalogs').html(data);
+            $('#tableLenses').html(data);
             $('#loading').hide();
         },
         error: function () {
@@ -24,57 +26,54 @@ function loadTable(offset_pag, active_pag) {
     });
 }
 
-function modNewCatalogs() {
-    var catalog_id = $('#c_catalogs').val();
-    var funcion = '../controller/catalogs_controller.php';
+function modNewLenses() {
+    var funcion = '../controller/lenses_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'modalNewCatalogs', catalog_id: catalog_id },
+        data: { function: 'modalNewLenses' },
         cache: false,
         success: function (data) {
-            $('#formNewCatalogs').html(data)
+            $('#formNewLenses').html(data)
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
         },
         complete: function () {
-            $('#catalog').prop('required', true);
+            $('#n_amount').prop('required', true);
         }
     });
-    $('#modNewCatalogs').modal('show');
+    $('#modNewLenses').modal('show');
     return false;
 }
-function saveCatalogs() {
-    var n_catalog_id = $('#c_catalogs').val();
-    var n_name = $('#n_name').val();
-    var n_value = $('#n_value').val();
+function saveLenses() {
+    var n_material = $('#n_material').val();
+    var n_lens_type = $('#n_lens_type').val();
+    var n_treatment = $('#n_treatment').val();
+    var n_photo_sensitivity = $('#n_photo_sensitivity').val();
+    var n_transition = $('#n_transition').val();
+    var n_amount = $('#n_amount').val();
     var n_active = $('#n_active').val();
-    var funcion = '../controller/catalogs_controller.php';
+    var funcion = '../controller/lenses_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'newCatalogs', catalog_id: n_catalog_id, name: n_name, value: n_value, active: n_active },
+        data: { function: 'newLenses', material: n_material, lens_type: n_lens_type, treatment: n_treatment.toString(), photo_sensitivity: n_photo_sensitivity, transition: n_transition, amount: n_amount, active: n_active },
         cache: false,
         beforeSend: function (xhr) {
-            if (n_catalog_id == '') {
-                alertPopUp(translate['advertice'], translate['catalogs_father_null'], 'warning');
-                xhr.abort();
-                return false;
-            }
-            if (n_name == '' || n_value == '') {
+            if (n_material == '' || n_lens_type == '' || n_treatment == '' || n_photo_sensitivity == '' || n_transition == '' || n_amount == '' || n_active == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 xhr.abort();
                 return false;
             }
         },
         success: function () {
-            $('#modNewCatalogs').modal('hide');
+            $('#modNewLenses').modal('hide');
             loadTable(0, 1);
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-            $('#modNewCatalogs').modal('hide');
+            $('#modNewLenses').modal('hide');
         },
         complete: function () {
             alertPopUp(translate['success'], translate['saved_catalog'], 'success');
@@ -82,66 +81,68 @@ function saveCatalogs() {
         }
     });
 }
-function modEditCatalogs(id) {
-    $('#catalog_id').val(id);
-    var funcion = '../controller/catalogs_controller.php';
+function modEditLenses(id) {
+    $('#lenses_id').val(id);
+    var funcion = '../controller/lenses_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'modalEditCatalogs', id: id },
+        data: { function: 'modalEditLenses', id: id },
         cache: false,
         beforeSend: function () {
-            $('#e_catalog').val('');
-            $('#e_active').val('');
+            $('#n_amount').val('');
         },
         success: function (data) {
-            $('#formEditCatalogs').html(data)
+            $('#formEditLenses').html(data)
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
         }
     });
-    $('#modEditCatalogs').modal('show');
+    $('#modEditLenses').modal('show');
     return false;
 }
-function editCatalogs() {
-    var e_catalog_id = $('#c_catalogs').val();
+function editLenses() {
     var e_id = $('#e_id').val();
-    var e_name = $('#e_name').val();
-    var e_value = $('#e_value').val();
+    var e_material = $('#e_material').val();
+    var e_lens_type = $('#e_lens_type').val();
+    var e_treatment = $('#e_treatment').val();
+    var e_photo_sensitivity = $('#e_photo_sensitivity').val();
+    var e_transition = $('#e_transition').val();
+    var e_amount = $('#e_amount').val();
     var e_active = $('#e_active').val();
-    var funcion = '../controller/catalogs_controller.php';
+    var funcion = '../controller/lenses_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'editCatalogs', id: e_id, catalog_id: e_catalog_id, name: e_name, value: e_value, active: e_active },
+        data: { function: 'editLenses', id: e_id, material: e_material, lens_type: e_lens_type, treatment: e_treatment.toString(), photo_sensitivity: e_photo_sensitivity, transition: e_transition, amount: e_amount, active: e_active },
         cache: false,
         beforeSend: function (xhr) {
-            if (e_catalog_id == '' || e_name == '' || e_value == '') {
+            if (e_material == '' || e_lens_type == '' || e_treatment == '' || e_photo_sensitivity == '' || e_transition == '' || e_amount == '' || e_active == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 xhr.abort();
                 return false;
             }
         },
         success: function () {
-            $('#modEditCatalogs').modal('hide');
+            $('#modEditLenses').modal('hide');
             loadTable(0, 1);
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-            $('#modEditCatalogs').modal('hide');
+            $('#modEditLenses').modal('hide');
         },
         complete: function () {
             alertPopUp(translate['success'], translate['saved_catalog'], 'success');
         }
     });
 }
-function deleteCatalogs(id) {
-    var funcion = '../controller/catalogs_controller.php';
+function deleteLenses(id) {
+    var funcion = '../controller/lenses_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'deleteCatalogs', id: id },
+        data: { function: 'deleteLenses', id: id },
         cache: false,
         beforeSend: function () {
             return confirm(translate['confirm_delete_register']);
@@ -161,9 +162,9 @@ function deleteCatalogs(id) {
         }
     });
 }
-function closeModalNewCatalogs() {
-    $('#modNewCatalogs').modal('hide');
+function closeModalNewLenses() {
+    $('#modNewLenses').modal('hide');
 }
-function closeModalEditCatalogs() {
-    $('#modEditCatalogs').modal('hide');
+function closeModalEditLenses() {
+    $('#modEditLenses').modal('hide');
 }

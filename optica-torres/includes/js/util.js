@@ -26,6 +26,18 @@ function numberValidate(evt) {
     return true;
   }
 }
+function floatValidate(evt) {
+  var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+  if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) {
+    if (ASCIICode == 46){
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return true;
+  }
+}
 function stringValidate(evt) {
   var ASCIICode = (evt.which) ? evt.which : evt.keyCode
   if ((ASCIICode > 64 && ASCIICode < 91) || (ASCIICode > 96 && ASCIICode < 123)) {
@@ -107,7 +119,7 @@ $(document).ready(function () {
 //Flotante con . o ,
 $(document).ready(function () {
   $('input[class=campoFlotante]').inputFilter(function (value) {
-    return /^-?\d*[.,]?\d*$/.test(value);
+    return /^-?\d*[.]?\d*$/.test(value);
   });
 });
 //Moneda
@@ -176,5 +188,6 @@ var translate = {
   success: 'Éxito!',
   update_register: 'Registro Modificado.',
   user_send_mail: 'Correo enviado.',
-  required_fields: 'Ingrese los campos requeridos.'
+  required_fields: 'Ingrese los campos requeridos.',
+  report_invalid_date: 'Verifique las fechas ingresadas'
 };

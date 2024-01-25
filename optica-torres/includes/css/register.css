@@ -109,7 +109,7 @@ a:hover { text-decoration: none }
     top: 0;
     left: 0;
     background-color: rgba(0,0,0,.5);
-    background-image: url('https://cdn.jsdelivr.net/gh/prometeo84/libs@main/optica-torres/includes/img/43.gif');
+    background-image: url('../img/43.gif');
     background-repeat: no-repeat;
     background-position: center;
     -webkit-transition: all .5s ease;

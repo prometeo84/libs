@@ -1,20 +1,20 @@
 function loadTable(offset_pag, active_pag) {
     var limite_pag = 5;
-    var c_catalogs = $('#c_catalogs').val();
-    var c_name = $('#c_name').val();
-    var c_value = $('#c_value').val();
+    var c_type = $('#c_type').val();
+    var c_brand = $('#c_brand').val();
+    var c_code = $('#c_code').val();
     var c_active = $('#c_active').val();
-    var funcion = '../controller/catalogs_controller.php';
+    var funcion = '../controller/frames_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'loadTableCatalogs', limit: limite_pag, offset: offset_pag, active_p: active_pag, catalog_id: c_catalogs, name: c_name, value: c_value, active: c_active },
+        data: { function: 'loadTableFrames', limit: limite_pag, offset: offset_pag, active_p: active_pag, type: c_type, brand: c_brand, code: c_code, active: c_active },
         cache: false,
         beforeSend: function () {
             $('#loading').show();
         },
         success: function (data) {
-            $('#tableCatalogs').html(data);
+            $('#tableFrames').html(data);
             $('#loading').hide();
         },
         error: function () {
@@ -24,57 +24,55 @@ function loadTable(offset_pag, active_pag) {
     });
 }
 
-function modNewCatalogs() {
-    var catalog_id = $('#c_catalogs').val();
-    var funcion = '../controller/catalogs_controller.php';
+function modNewFrames() {
+    var funcion = '../controller/frames_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'modalNewCatalogs', catalog_id: catalog_id },
+        data: { function: 'modalNewFrames' },
         cache: false,
         success: function (data) {
-            $('#formNewCatalogs').html(data)
+            $('#formNewFrames').html(data)
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
         },
         complete: function () {
-            $('#catalog').prop('required', true);
+            $('#n_sale_price').prop('required', true);
+            $('#n_amount').prop('required', true);
         }
     });
-    $('#modNewCatalogs').modal('show');
+    $('#modNewFrames').modal('show');
     return false;
 }
-function saveCatalogs() {
-    var n_catalog_id = $('#c_catalogs').val();
-    var n_name = $('#n_name').val();
-    var n_value = $('#n_value').val();
+function saveFrames() {
+    var n_type = $('#n_type').val();
+    var n_brand = $('#n_brand').val();
+    var n_code = $('#n_code').val();
+    var n_sale_price = $('#n_sale_price').val();
+    var n_amount = $('#n_amount').val();
+    var n_observations = $('#n_observations').val();
     var n_active = $('#n_active').val();
-    var funcion = '../controller/catalogs_controller.php';
+    var funcion = '../controller/frames_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'newCatalogs', catalog_id: n_catalog_id, name: n_name, value: n_value, active: n_active },
+        data: { function: 'newFrames', type: n_type, brand: n_brand, code: n_code, sale_price: n_sale_price, observations: n_observations, amount: n_amount, active: n_active },
         cache: false,
         beforeSend: function (xhr) {
-            if (n_catalog_id == '') {
-                alertPopUp(translate['advertice'], translate['catalogs_father_null'], 'warning');
-                xhr.abort();
-                return false;
-            }
-            if (n_name == '' || n_value == '') {
+            if (n_type == '' || n_brand == '' || n_code == '' || n_sale_price == '' || n_observations == '' || n_amount == '' || n_active == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 xhr.abort();
                 return false;
             }
         },
         success: function () {
-            $('#modNewCatalogs').modal('hide');
+            $('#modNewFrames').modal('hide');
             loadTable(0, 1);
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-            $('#modNewCatalogs').modal('hide');
+            $('#modNewFrames').modal('hide');
         },
         complete: function () {
             alertPopUp(translate['success'], translate['saved_catalog'], 'success');
@@ -82,66 +80,70 @@ function saveCatalogs() {
         }
     });
 }
-function modEditCatalogs(id) {
-    $('#catalog_id').val(id);
-    var funcion = '../controller/catalogs_controller.php';
+function modEditFrames(id) {
+    $('#frames_id').val(id);
+    var funcion = '../controller/frames_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'modalEditCatalogs', id: id },
+        data: { function: 'modalEditFrames', id: id },
         cache: false,
         beforeSend: function () {
-            $('#e_catalog').val('');
-            $('#e_active').val('');
+            $('#n_sale_price').val('');
+            $('#n_amount').val('');
+            $('#n_observations').val('');
         },
         success: function (data) {
-            $('#formEditCatalogs').html(data)
+            $('#formEditFrames').html(data)
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
         }
     });
-    $('#modEditCatalogs').modal('show');
+    $('#modEditFrames').modal('show');
     return false;
 }
-function editCatalogs() {
-    var e_catalog_id = $('#c_catalogs').val();
+function editFrames() {
     var e_id = $('#e_id').val();
-    var e_name = $('#e_name').val();
-    var e_value = $('#e_value').val();
+    var e_type = $('#e_type').val();
+    var e_brand = $('#e_brand').val();
+    var e_code = $('#e_code').val();
+    var e_sale_price = $('#e_sale_price').val();
+    var e_amount = $('#e_amount').val();
+    var e_observations = $('#e_observations').val();
     var e_active = $('#e_active').val();
-    var funcion = '../controller/catalogs_controller.php';
+    var funcion = '../controller/frames_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'editCatalogs', id: e_id, catalog_id: e_catalog_id, name: e_name, value: e_value, active: e_active },
+        data: { function: 'editFrames', id: e_id, type: e_type, brand: e_brand, code: e_code, sale_price: e_sale_price, observations: e_observations, amount: e_amount, active: e_active },
         cache: false,
         beforeSend: function (xhr) {
-            if (e_catalog_id == '' || e_name == '' || e_value == '') {
+            if (e_type == '' || e_brand == '' || e_code == '' || e_sale_price == '' || e_observations == '' || e_amount == '' || e_active == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 xhr.abort();
                 return false;
             }
         },
         success: function () {
-            $('#modEditCatalogs').modal('hide');
+            $('#modEditFrames').modal('hide');
             loadTable(0, 1);
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-            $('#modEditCatalogs').modal('hide');
+            $('#modEditFrames').modal('hide');
         },
         complete: function () {
             alertPopUp(translate['success'], translate['saved_catalog'], 'success');
         }
     });
 }
-function deleteCatalogs(id) {
-    var funcion = '../controller/catalogs_controller.php';
+function deleteFrames(id) {
+    var funcion = '../controller/frames_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'deleteCatalogs', id: id },
+        data: { function: 'deleteFrames', id: id },
         cache: false,
         beforeSend: function () {
             return confirm(translate['confirm_delete_register']);
@@ -161,9 +163,9 @@ function deleteCatalogs(id) {
         }
     });
 }
-function closeModalNewCatalogs() {
-    $('#modNewCatalogs').modal('hide');
+function closeModalNewFrames() {
+    $('#modNewFrames').modal('hide');
 }
-function closeModalEditCatalogs() {
-    $('#modEditCatalogs').modal('hide');
+function closeModalEditFrames() {
+    $('#modEditFrames').modal('hide');
 }
