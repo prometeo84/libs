@@ -1,5 +1,5 @@
 function loadTable(offset_pag, active_pag) {
-    var limite_pag = 5;
+    var limite_pag = 10;
     var c_type = $('#c_type').val();
     var c_brand = $('#c_brand').val();
     var c_code = $('#c_code').val();
