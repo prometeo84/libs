@@ -88,6 +88,7 @@ function saveOptometry() {
     var mea_optometry_left_eye = $('#op_mea_optometry_left_eye').val();
     var obs_optometry_right_eye = $('#op_obs_optometry_right_eye').val();
     var obs_optometry_left_eye = $('#op_obs_optometry_left_eye').val();
+    var responsible = $('#op_responsible')val();
     var values = {};
     values['function'] = 'newOptometry';
     values['patient_id'] = patient_id;
@@ -132,6 +133,7 @@ function saveOptometry() {
     values['mea_optometry_left_eye'] = mea_optometry_left_eye;
     values['obs_optometry_right_eye'] = obs_optometry_right_eye;
     values['obs_optometry_left_eye'] = obs_optometry_left_eye;
+    values['responsible'] = responsible;
     values['user_name'] = user_name;
     $.ajax({
         type: 'POST',
@@ -193,6 +195,7 @@ function editOptometry(id) {
     var mea_optometry_left_eye = $('#op_mea_optometry_left_eye').val();
     var obs_optometry_right_eye = $('#op_obs_optometry_right_eye').val();
     var obs_optometry_left_eye = $('#op_obs_optometry_left_eye').val();
+    var responsible = $('#op_responsible').val();
     var values = {};
     values['function'] = 'editOptometry';
     values['id'] = id;
@@ -238,6 +241,7 @@ function editOptometry(id) {
     values['mea_optometry_left_eye'] = mea_optometry_left_eye;
     values['obs_optometry_right_eye'] = obs_optometry_right_eye;
     values['obs_optometry_left_eye'] = obs_optometry_left_eye;
+    values['responsible'] = responsible;
     $.ajax({
         type: 'POST',
         url: funcion,
