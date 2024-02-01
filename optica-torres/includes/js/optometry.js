@@ -88,7 +88,7 @@ function saveOptometry() {
     var mea_optometry_left_eye = $('#op_mea_optometry_left_eye').val();
     var obs_optometry_right_eye = $('#op_obs_optometry_right_eye').val();
     var obs_optometry_left_eye = $('#op_obs_optometry_left_eye').val();
-    var responsible = $('#op_responsible')val();
+    var responsible = $('#op_responsible').val();
     var values = {};
     values['function'] = 'newOptometry';
     values['patient_id'] = patient_id;
