@@ -164,6 +164,7 @@ function newPDF(type_pdf, op) {
             var date = $('#c_date').val();
             var resting_day = $('#c_resting_day').val();
             var rest_date = $('#c_rest_date').val();
+            var branch = $('#c_branch').val();
             var recommendatios = $('#c_recommendatios').val();
             var clinic_history = $('#c_clinic_history').val();
             var contingency = $('#c_contingency').val();
@@ -194,8 +195,9 @@ function newPDF(type_pdf, op) {
             values['diagnosis_left_eye'] = diagnosis_left_eye;
             values['diagnosis_complementary'] = diagnosis_complementary;
             values['treatment'] = treatment;
+            values['branch'] = branch;
             values['foot_signature'] = foot_signature;
-            if (date == '' || resting_day == '' || rest_date == '' || recommendatios == '' || foot_signature == '') {
+            if (date == '' || resting_day == '' || rest_date == '' || recommendatios == '' || foot_signature == '' || branch == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 validate = false;
             }
