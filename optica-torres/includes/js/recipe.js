@@ -35,3 +35,22 @@ function loadRecipePDF(pdf_id, op) {
         }
     });
 }
+
+function openModalEmailAttachment(id) {
+    var funcion = '../controller/recipe_controller.php';
+    $.ajax({
+        type: 'POST',
+        url: funcion,
+        data: { function: 'modUploadEmailattachment', id: id },
+        cache: false,
+        success: function (data) {
+            $('#formUploadFile').html(data);
+        },
+        error: function () {
+            alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
+        }
+    });
+    $('#modUploadEmailattachment').modal('show');
+    return false;
+}
+
