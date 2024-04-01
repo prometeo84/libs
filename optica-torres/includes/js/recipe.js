@@ -44,7 +44,7 @@ function openModalEmailAttachment(id) {
         data: { function: 'modUploadEmailAttachment', id: id },
         cache: false,
         success: function (data) {
-            $('#formUploadFile').html(data);
+            $('#formUploadAttachment').html(data);
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
