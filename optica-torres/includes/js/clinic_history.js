@@ -56,7 +56,6 @@ function showPatientEditFrame(id) {
     $('#modSearchPatient').modal('hide');
     $('#patient_id').val(id);
     loadTablePatient(id);
-    $('#TableAnamnesis').show();
 }
 
 function loadTablePatient(id) {
