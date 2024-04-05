@@ -60,17 +60,17 @@ function showPatientEditFrame(id) {
 }
 
 function loadTablePatient(id) {
-    var funcion = '../controller/anamnesis_controller.php';
+    var funcion = '../controller/clinic_history_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'loadTablePatient', id: id, mode: mode },
+        data: { function: 'loadTableClinicHistory', id: id},
         cache: false,
         error: function (xhr, status) {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
         },
         success: function (data) {
-            $('#tab-content-1').html(data);
+            $('#tableClinicHistory').html(data);
         },
         complete: function (xhr, status) {
             alertPopUp(translate['success'], translate['information_success'], 'success');
