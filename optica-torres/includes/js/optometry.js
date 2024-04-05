@@ -89,6 +89,7 @@ function saveOptometry() {
     var obs_optometry_right_eye = $('#op_obs_optometry_right_eye').val();
     var obs_optometry_left_eye = $('#op_obs_optometry_left_eye').val();
     var responsible = $('#op_responsible').val();
+    var receive = $('#op_receive').val();
     var values = {};
     values['function'] = 'newOptometry';
     values['patient_id'] = patient_id;
@@ -135,6 +136,7 @@ function saveOptometry() {
     values['obs_optometry_left_eye'] = obs_optometry_left_eye;
     values['responsible'] = responsible;
     values['user_name'] = user_name;
+    values['receive'] = receive;
     $.ajax({
         type: 'POST',
         url: funcion,
@@ -196,6 +198,7 @@ function editOptometry(id) {
     var obs_optometry_right_eye = $('#op_obs_optometry_right_eye').val();
     var obs_optometry_left_eye = $('#op_obs_optometry_left_eye').val();
     var responsible = $('#op_responsible').val();
+    var receive = $('#op_receive').val();
     var values = {};
     values['function'] = 'editOptometry';
     values['id'] = id;
@@ -242,6 +245,7 @@ function editOptometry(id) {
     values['obs_optometry_right_eye'] = obs_optometry_right_eye;
     values['obs_optometry_left_eye'] = obs_optometry_left_eye;
     values['responsible'] = responsible;
+    values['receive'] = receive;
     $.ajax({
         type: 'POST',
         url: funcion,
