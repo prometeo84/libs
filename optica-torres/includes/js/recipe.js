@@ -82,6 +82,7 @@ function uploadFileAttachment() {
         },
         success: function () {
             alertPopUp(translate['success'], translate['information_success'], 'success');
+            $('#modUploadEmailAttachment').modal('hide');
         },
         error: function (xhr) {
             alertPopUp(translate['error'], xhr.responseText, 'error');
