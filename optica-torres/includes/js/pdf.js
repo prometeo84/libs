@@ -256,6 +256,16 @@ function newPDF(type_pdf, op) {
                 validate = false;
             }
             break;
+        case 'HISTORIAL_MEDICO':
+            var patient_id = '+Q==';
+            var id_number = $('#id_number').val();;
+            values['id_number'] = id_number;
+            values['patient_id'] = patient_id;
+            if (id_number == '') {
+                alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
+                validate = false;
+            }
+            break;
     }
     if (validate) {
         $.ajax({
