@@ -156,7 +156,7 @@ function newPDF(type_pdf, op) {
                 validate = false;
             }
             break;
-        case 'IESS':
+        case 'IESS-SURGERY':
             var id_number = $('#c_id_number').val();
             var name = $('#c_name').val();
             var genre = $('#c_genre').val();
@@ -195,6 +195,56 @@ function newPDF(type_pdf, op) {
             values['diagnosis_left_eye'] = diagnosis_left_eye;
             values['diagnosis_complementary'] = diagnosis_complementary;
             values['treatment'] = treatment;
+            values['branch'] = branch;
+            values['foot_signature'] = foot_signature;
+            if (date == '' || resting_day == '' || rest_date == '' || recommendatios == '' || foot_signature == '' || branch == '') {
+                alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
+                validate = false;
+            }
+            break;
+        case 'IESS-ATTENTION':
+            var id_number = $('#c_id_number').val();
+            var name = $('#c_name').val();
+            var age = $('#c_age').val();
+            var genre = $('#c_genre').val();
+            var city_name = $('#c_city_name').val();
+            var date = $('#c_date').val();
+            var resting_day = $('#c_resting_day').val();
+            var rest_date = $('#c_rest_date').val();
+            var branch = $('#c_branch').val();
+            var recommendatios = $('#c_recommendatios').val();
+            var clinic_history = $('#c_clinic_history').val();
+            var contingency = $('#c_contingency').val();
+            var address = $('#c_address').val();
+            var mobile = $('#c_mobile').val();
+            var workplace = $('#c_workplace').val();
+            var work_activity = $('#c_work_activity').val();
+            var diagnosis_right_eye = $('#c_diagnosis_right_eye').val();
+            var diagnosis_left_eye = $('#c_diagnosis_left_eye').val();
+            var diagnosis_complementary = $('#c_diagnosis_complementary').val();
+            var treatment = $('#c_treatment').val();
+            var email = $('#c_email').val();
+            var foot_signature = $('#c_foot_signature').val();
+            values['id_number'] = id_number;
+            values['name'] = name;
+            values['age'] = age;
+            values['genre'] = genre;
+            values['city_name'] = city_name;
+            values['date'] = date;
+            values['resting_day'] = resting_day;
+            values['rest_date'] = rest_date;
+            values['recommendatios'] = recommendatios;
+            values['clinic_history'] = clinic_history;
+            values['contingency'] = contingency;
+            values['address'] = address;
+            values['mobile'] = mobile;
+            values['workplace'] = workplace;
+            values['work_activity'] = work_activity;
+            values['diagnosis_right_eye'] = diagnosis_right_eye;
+            values['diagnosis_left_eye'] = diagnosis_left_eye;
+            values['diagnosis_complementary'] = diagnosis_complementary;
+            values['treatment'] = treatment;
+            values['email'] = email;
             values['branch'] = branch;
             values['foot_signature'] = foot_signature;
             if (date == '' || resting_day == '' || rest_date == '' || recommendatios == '' || foot_signature == '' || branch == '') {
