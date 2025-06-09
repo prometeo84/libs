@@ -92,6 +92,9 @@ function saveOptometry() {
     var receive = $('#op_receive').val();
     var reason_for_consultation = $('#op_reason_for_consultation').val();
     var current_illness = $('#op_current_illness').val();
+    var indications = $('#op_indications').val();
+    var occupational = $('#op_occupational').val();
+    var examination_place = $('#op_examination_place').val();
     var values = {};
     values['function'] = 'newOptometry';
     values['patient_id'] = patient_id;
@@ -141,6 +144,9 @@ function saveOptometry() {
     values['receive'] = receive;
     values['reason_for_consultation'] = reason_for_consultation;
     values['current_illness'] = current_illness;
+    values['indications'] = indications;
+    values['occupational'] = occupational;
+    values['examination_place'] = examination_place;
     $.ajax({
         type: 'POST',
         url: funcion,
@@ -205,6 +211,9 @@ function editOptometry(id) {
     var receive = $('#op_receive').val();
     var reason_for_consultation = $('#op_reason_for_consultation').val();
     var current_illness = $('#op_current_illness').val();
+    var indications = $('#op_indications').val();
+    var occupational = $('#op_occupational').val();
+    var examination_place = $('#op_examination_place').val();
     var values = {};
     values['function'] = 'editOptometry';
     values['id'] = id;
@@ -254,6 +263,9 @@ function editOptometry(id) {
     values['receive'] = receive;
     values['reason_for_consultation'] = reason_for_consultation;
     values['current_illness'] = current_illness;
+    values['indications'] = indications;
+    values['occupational'] = occupational;
+    values['examination_place'] = examination_place;
     $.ajax({
         type: 'POST',
         url: funcion,

@@ -1,4 +1,4 @@
-function readCity(provinceName) {
+function readCity(provinceName, element) {
     var funcion = '../controller/catalogs_controller.php';
     $.ajax({
         type: 'POST',
@@ -12,7 +12,7 @@ function readCity(provinceName) {
             }
         },
         success: function (data) {
-            $('#a_city').html(data)
+            $('#' + element).html(data)
         },
         error: function (xhr, status) {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
@@ -315,6 +315,8 @@ function showDiv(tabName) {
             break;
         case 'tab5':
             loadRecipe();
+        case 'tab7':
+            loadTableReceipt();
             break;
     }
 }

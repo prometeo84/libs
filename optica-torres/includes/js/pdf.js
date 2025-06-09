@@ -9,8 +9,9 @@ function newPDF(type_pdf, op) {
             var date = $('#r_date').val();
             var rp = $('#r_rp').val();
             var indications = $('#r_indications').val();
-            var city_name = $('#r_city_name').val();
+            var city = $('#r_city').val();
             var age = $('#r_age').val();
+            var month = $('#r_month').val();
             var d_re = $('#r_d_re').val();
             var d_le = $('#r_d_le').val();
             var d_complementary = $('#r_d_complementary').val();
@@ -19,8 +20,9 @@ function newPDF(type_pdf, op) {
             values['date'] = date;
             values['rp'] = rp;
             values['indications'] = indications;
-            values['city_name'] = city_name;
+            values['r_city'] = city;
             values['age'] = age;
+            values['month'] = month;
             values['d_re'] = d_re;
             values['d_le'] = d_le;
             values['d_complementary'] = d_complementary;
@@ -312,6 +314,16 @@ function newPDF(type_pdf, op) {
             values['id_number'] = id_number;
             values['patient_id'] = patient_id;
             if (id_number == '') {
+                alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
+                validate = false;
+            }
+            break;
+        case 'REPORTE_MENSUAL_AGENDA':
+            var patient_id = '+Q==';
+            var id_month = $('#month').val();;
+            values['id_month'] = id_month;
+            values['patient_id'] = patient_id;
+            if (id_month == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 validate = false;
             }
