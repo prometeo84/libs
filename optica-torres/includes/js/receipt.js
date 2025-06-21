@@ -1,3 +1,4 @@
+// file deepcode ignore DOMXSS: Sanitize in Class
 function modReceipt() {
     var funcion = '../controller/receipt_controller.php';
     $.ajax({
@@ -50,8 +51,6 @@ function saveReceipt() {
     var branch_id = $('#r_branch').val();
     var delivery_date = $('#r_delivery_date').val();
     var retirement_date = $('#r_retirement_date').val();
-    var method_payment = $('#r_method_payment').val();
-    var bank = $('#r_bank').val();
     var amount_paid = $('#r_amount_paid').val();
     var values = {};
     values['function'] = 'newReceipt';
@@ -60,8 +59,6 @@ function saveReceipt() {
     values['branch_id'] = branch_id;
     values['delivery_date'] = delivery_date;
     values['retirement_date'] = retirement_date;
-    values['method_payment'] = method_payment;
-    values['bank'] = bank;
     values['amount_paid'] = amount_paid;
     $.ajax({
         type: 'POST',
@@ -69,7 +66,7 @@ function saveReceipt() {
         data: values,
         cache: false,
         beforeSend: function (xhr) {
-            if (branch_id == '' || delivery_date == '' || method_payment == '' || amount_paid == '') {
+            if (branch_id == '' || delivery_date == '' || amount_paid == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 xhr.abort();
                 return false;
@@ -93,8 +90,6 @@ function editReceipt(id) {
     var branch_id = $('#r_branch').val();
     var delivery_date = $('#r_delivery_date').val();
     var retirement_date = $('#r_retirement_date').val();
-    var method_payment = $('#r_method_payment').val();
-    var bank = $('#r_bank').val();
     var amount_paid = $('#r_amount_paid').val();
     var values = {};
     values['id'] = id;
@@ -104,8 +99,6 @@ function editReceipt(id) {
     values['branch_id'] = branch_id;
     values['delivery_date'] = delivery_date;
     values['retirement_date'] = retirement_date;
-    values['method_payment'] = method_payment;
-    values['bank'] = bank;
     values['amount_paid'] = amount_paid;
     $.ajax({
         type: 'POST',
@@ -113,7 +106,7 @@ function editReceipt(id) {
         data: values,
         cache: false,
         beforeSend: function (xhr) {
-            if (branch_id == '' || delivery_date == '' || method_payment == '' || amount_paid == '') {
+            if (branch_id == '' || delivery_date == '' || amount_paid == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 xhr.abort();
                 return false;
@@ -150,13 +143,4 @@ function modEditReceipt(id) {
 
 function closeModalReceipt() {
     $('#modReceipt').modal('hide');
-}
-
-function methodPayment(){
-    var selectedText = $('#r_method_payment option:selected').text();
-    if(selectedText === 'TRANSFERENCIA'){
-        $('#r_bank').show();
-    }else{
-        $('#r_bank').hide();
-    }
 }

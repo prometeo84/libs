@@ -1,3 +1,4 @@
+// file deepcode ignore DOMXSS: Sanitize in Class
 function modOptometry() {
     var funcion = '../controller/optometry_controller.php';
     $.ajax({

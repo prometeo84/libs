@@ -1,3 +1,4 @@
+// file deepcode ignore DOMXSS: Sanitize in Class
 function readCity(provinceName, element) {
     var funcion = '../controller/catalogs_controller.php';
     $.ajax({

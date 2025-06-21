@@ -16,6 +16,10 @@ function newPDF(type_pdf, op) {
             var d_le = $('#r_d_le').val();
             var d_complementary = $('#r_d_complementary').val();
             var foot_signature = $('#r_foot_signature').val();
+            var id_number = $('#r_id_number').val();
+            var genre = $('#r_genre_id').val();
+            var allergy = $('#r_allergy').val();
+            op = $('#r_foot_signature option:selected').text();
             values['name'] = name;
             values['date'] = date;
             values['rp'] = rp;
@@ -27,6 +31,9 @@ function newPDF(type_pdf, op) {
             values['d_le'] = d_le;
             values['d_complementary'] = d_complementary;
             values['foot_signature'] = foot_signature;
+            values['id_number'] = id_number;
+            values['genre'] = genre;
+            values['allergy'] = allergy;
             if (date == '' || rp == '' || indications == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 validate = false;
@@ -310,7 +317,7 @@ function newPDF(type_pdf, op) {
             break;
         case 'HISTORIAL_MEDICO':
             var patient_id = '+Q==';
-            var id_number = $('#id_number').val();;
+            var id_number = $('#id_number').val();
             values['id_number'] = id_number;
             values['patient_id'] = patient_id;
             if (id_number == '') {
@@ -320,9 +327,44 @@ function newPDF(type_pdf, op) {
             break;
         case 'REPORTE_MENSUAL_AGENDA':
             var patient_id = '+Q==';
-            var id_month = $('#month').val();;
+            var id_month = $('#month').val();
             values['id_month'] = id_month;
             values['patient_id'] = patient_id;
+            if (id_month == '') {
+                alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
+                validate = false;
+            }
+            break;
+        case 'REPORTE_COBROS':
+            var patient_id = '+Q==';
+            var id_number = $('#id_number').val();
+            var s_date = $('#s_date').val();
+            var f_date = $('#f_date').val();
+            var branch = $('#branch').val();
+            var canceled = $('#canceled').val();
+            values['id_number'] = id_number;
+            values['patient_id'] = patient_id;
+            values['s_date'] = s_date;
+            values['f_date'] = f_date;
+            values['branch'] = branch;
+            values['canceled'] = canceled;
+            var sDate = new Date(s_date);
+            var fDate = new Date(f_date);
+            var millisecondsPerDay = 1000 * 60 * 60 * 24;
+            var millisBetween = fDate.getTime() - sDate.getTime();
+            var days = millisBetween / millisecondsPerDay;
+            if (days < 0) {
+                alertPopUp(translate['advertice'], translate['report_invalid_date'], 'warning');
+                validate = false;
+            }
+            if (id_number == '') {
+                alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
+                validate = false;
+            }
+            break;
+        case 'RECEIPT':
+            var patient_id = '+Q==';
+            values['receipt_detail_id'] = op;
             if (id_month == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 validate = false;
