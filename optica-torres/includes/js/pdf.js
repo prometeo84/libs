@@ -19,6 +19,7 @@ function newPDF(type_pdf, op) {
             var id_number = $('#r_id_number').val();
             var genre = $('#r_genre_id').val();
             var allergy = $('#r_allergy').val();
+            var foot_signature_name = $('#r_foot_signature option:selected').text();
             op = $('#r_foot_signature option:selected').text();
             values['name'] = name;
             values['date'] = date;
@@ -34,6 +35,7 @@ function newPDF(type_pdf, op) {
             values['id_number'] = id_number;
             values['genre'] = genre;
             values['allergy'] = allergy;
+            values['foot_signature_name'] = foot_signature_name;
             if (date == '' || rp == '' || indications == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 validate = false;
@@ -48,6 +50,7 @@ function newPDF(type_pdf, op) {
             var appointment_start_date = $('#c_appointment_start_date').val();
             var appointment_finish_date = $('#c_appointment_finish_date').val();
             var foot_signature = $('#c_foot_signature').val();
+            var foot_signature_name = $('#c_foot_signature option:selected').text();
             values['id_number'] = id_number;
             values['name'] = name;
             values['genre'] = genre;
@@ -56,6 +59,7 @@ function newPDF(type_pdf, op) {
             values['appointment_start_date'] = appointment_start_date;
             values['appointment_finish_date'] = appointment_finish_date;
             values['foot_signature'] = foot_signature;
+            values['foot_signature_name'] = foot_signature_name;
             if (date == '' || appointment_start_date == '' || appointment_finish_date == '' || foot_signature == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 validate = false;
@@ -87,6 +91,7 @@ function newPDF(type_pdf, op) {
             var d_complementary = $('#c_d_complementary').val();
             var c_recomendations = $('#c_recomendations').val();
             var foot_signature = $('#c_foot_signature').val();
+            var foot_signature_name = $('#c_foot_signature option:selected').text();
             values['id_number'] = id_number;
             values['name'] = name;
             values['genre'] = genre;
@@ -112,6 +117,7 @@ function newPDF(type_pdf, op) {
             values['d_complementary'] = d_complementary;
             values['c_recomendations'] = c_recomendations;
             values['foot_signature'] = foot_signature;
+            values['foot_signature_name'] = foot_signature_name;
             if (date == '' || appointment_start_date == '' || appointment_finish_date == '' || foot_signature == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 validate = false;
@@ -139,6 +145,7 @@ function newPDF(type_pdf, op) {
             var ishihara_test = $("#c_ishihara_test").val();
             var c_recomendations = $('#c_recomendations').val();
             var foot_signature = $('#c_foot_signature').val();
+            var foot_signature_name = $('#c_foot_signature option:selected').text();
             values['id_number'] = id_number;
             values['name'] = name;
             values['genre'] = genre;
@@ -160,6 +167,7 @@ function newPDF(type_pdf, op) {
             values['dishihara_test'] = ishihara_test;
             values['c_recomendations'] = c_recomendations;
             values['foot_signature'] = foot_signature;
+            values['foot_signature_name'] = foot_signature_name;
             if (date == '' || appointment_start_date == '' || appointment_finish_date == '' || foot_signature == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 validate = false;
@@ -186,6 +194,7 @@ function newPDF(type_pdf, op) {
             var diagnosis_complementary = $('#c_diagnosis_complementary').val();
             var treatment = $('#c_treatment').val();
             var foot_signature = $('#c_foot_signature').val();
+            var foot_signature_name = $('#c_foot_signature option:selected').text();
             values['id_number'] = id_number;
             values['name'] = name;
             values['genre'] = genre;
@@ -206,6 +215,7 @@ function newPDF(type_pdf, op) {
             values['treatment'] = treatment;
             values['branch'] = branch;
             values['foot_signature'] = foot_signature;
+            values['foot_signature_name'] = foot_signature_name;
             if (date == '' || resting_day == '' || rest_date == '' || recommendatios == '' || foot_signature == '' || branch == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 validate = false;
@@ -234,6 +244,7 @@ function newPDF(type_pdf, op) {
             var treatment = $('#c_treatment').val();
             var email = $('#c_email').val();
             var foot_signature = $('#c_foot_signature').val();
+            var foot_signature_name = $('#c_foot_signature option:selected').text();
             values['id_number'] = id_number;
             values['name'] = name;
             values['age'] = age;
@@ -256,6 +267,7 @@ function newPDF(type_pdf, op) {
             values['email'] = email;
             values['branch'] = branch;
             values['foot_signature'] = foot_signature;
+            values['foot_signature_name'] = foot_signature_name;
             if (date == '' || resting_day == '' || rest_date == '' || recommendatios == '' || foot_signature == '' || branch == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 validate = false;
