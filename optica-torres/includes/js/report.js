@@ -1,4 +1,4 @@
-function reportSelect(value){
+function reportSelect(value) {
     var funcion = '../controller/report_controller.php';
     $.ajax({
         type: 'POST',
@@ -9,7 +9,7 @@ function reportSelect(value){
             $('#loading').show();
         },
         success: function (data) {
-            $('#reportSetup').html(data);
+            sanitizeAndSetHTML('#reportSetup', data);
             $('#loading').hide();
         },
         error: function () {

@@ -1,3 +1,13 @@
+/**
+ * @file Gestiona la lógica de la interfaz de usuario para la administración de los catálogos "padre".
+ * Este archivo se enfoca en las categorías de catálogos, no en sus ítems.
+ */
+
+/**
+ * Carga la tabla de catálogos padre con filtros y paginación.
+ * @param {number} offset_pag - El desplazamiento para la consulta de paginación.
+ * @param {number} active_pag - El número de la página activa para resaltarla en la UI.
+ */
 function loadTable(offset_pag, active_pag) {
   var limite_pag = $('#num_reg').val();
   var c_catalog = $('#c_catalog').val();
@@ -16,7 +26,7 @@ function loadTable(offset_pag, active_pag) {
       $('#loading').show();
     },
     success: function (data) {
-      $('#tableCatalog').html(data);
+      sanitizeAndSetHTML('#tableCatalog', data);
       $('#loading').hide();
     },
     error: function () {
@@ -26,6 +36,10 @@ function loadTable(offset_pag, active_pag) {
   });
 }
 
+/**
+ * Abre un modal para crear un nuevo catálogo padre.
+ * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
+ */
 function modNewCatalog() {
   var funcion = '../controller/catalog_controller.php';
   $.ajax({
@@ -34,7 +48,7 @@ function modNewCatalog() {
     data: { function: 'modalNewCatalog' },
     cache: false,
     success: function (data) {
-      $('#formNewCatalog').html(data)
+      sanitizeAndSetHTML('#formNewCatalog', data);
     },
     error: function () {
       alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
@@ -46,6 +60,10 @@ function modNewCatalog() {
   $('#modNewCatalog').modal('show');
   return false;
 }
+
+/**
+ * Recopila los datos del formulario de nuevo catálogo y los envía al servidor para ser guardados.
+ */
 function saveCatalog() {
   var n_catalog = $('#n_catalog').val();
   var n_active = $('#n_active').val();
@@ -76,6 +94,12 @@ function saveCatalog() {
     }
   });
 }
+
+/**
+ * Abre un modal para editar un catálogo padre existente, precargando sus datos.
+ * @param {string|number} id - El ID del catálogo a editar.
+ * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
+ */
 function modEditCatalog(id) {
   $('#catalog_id').val(id);
   var funcion = '../controller/catalog_controller.php';
@@ -89,7 +113,7 @@ function modEditCatalog(id) {
       $('#e_active').val('');
     },
     success: function (data) {
-      $('#formEditCatalog').html(data)
+      sanitizeAndSetHTML('#formEditCatalog', data);
     },
     error: function () {
       alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
@@ -98,6 +122,10 @@ function modEditCatalog(id) {
   $('#modEditCatalog').modal('show');
   return false;
 }
+
+/**
+ * Recopila los datos del formulario de edición y los envía al servidor para actualizar el catálogo.
+ */
 function editCatalog() {
   var id = $('#catalog_id').val();
   var e_catalog = $('#e_catalog').val();
@@ -129,6 +157,11 @@ function editCatalog() {
     }
   });
 }
+
+/**
+ * Envía una solicitud al servidor para eliminar un catálogo padre, previa confirmación.
+ * @param {string|number} id - El ID del catálogo a eliminar.
+ */
 function deleteCatalog(id) {
   var funcion = '../controller/catalog_controller.php';
   $.ajax({
@@ -154,9 +187,17 @@ function deleteCatalog(id) {
     }
   });
 }
+
+/**
+ * Cierra el modal de creación de nuevos catálogos.
+ */
 function closeModalNewCatalog() {
   $('#modNewCatalog').modal('hide');
 }
+
+/**
+ * Cierra el modal de edición de catálogos.
+ */
 function closeModalEditCatalog() {
   $('#modEditCatalog').modal('hide');
 }

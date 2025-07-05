@@ -1,3 +1,11 @@
+/**
+ * @file Gestiona la lógica de la interfaz de usuario para el agendamiento de citas.
+ */
+
+/**
+ * Abre un modal para crear una nueva cita.
+ * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
+ */
 function modAppointmentScheduling() {
     var funcion = '../controller/appointment_scheduling_controller.php';
     $.ajax({
@@ -6,7 +14,8 @@ function modAppointmentScheduling() {
         data: { function: 'modAppointmentScheduling' },
         cache: false,
         success: function (data) {
-            $('#formAppointmentScheduling').html(data)
+            sanitizeAndSetHTML('#formAppointmentScheduling', data);
+
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
@@ -16,6 +25,10 @@ function modAppointmentScheduling() {
     return false;
 }
 
+/**
+ * Carga la tabla con el historial de citas para el paciente seleccionado.
+ * La tabla incluye paginación.
+ */
 function loadTableAppointmentScheduling() {
     var funcion = '../controller/appointment_scheduling_controller.php';
     var id = $('#patient_id').val();
@@ -30,7 +43,7 @@ function loadTableAppointmentScheduling() {
                 alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
             },
             success: function (data) {
-                $('#tab-content-4').html(data);
+                sanitizeAndSetHTML('#tab-content-4', data);
             },
             complete: function () {
                 alertPopUp(translate['success'], translate['information_success'], 'success');
@@ -43,6 +56,11 @@ function loadTableAppointmentScheduling() {
     }
 }
 
+/**
+ * Recopila los datos del formulario de agendamiento y los envía al servidor
+ * para crear una nueva cita.
+ * Realiza una validación de campos requeridos antes de enviar.
+ */
 function saveAppointmentScheduling() {
     var funcion = '../controller/appointment_scheduling_controller.php';
     var patient_id = $('#patient_id').val();
@@ -78,6 +96,12 @@ function saveAppointmentScheduling() {
     });
 }
 
+/**
+ * Recopila los datos del formulario de agendamiento y los envía al servidor
+ * para actualizar una cita existente.
+ * Realiza una validación de campos requeridos antes de enviar.
+ * @param {string|number} id - El ID de la cita a editar.
+ */
 function editAppointmentScheduling(id) {
     var funcion = '../controller/appointment_scheduling_controller.php';
     var patient_id = $('#patient_id').val();
@@ -114,6 +138,11 @@ function editAppointmentScheduling(id) {
     });
 }
 
+/**
+ * Abre un modal para editar una cita existente, precargando sus datos.
+ * @param {string|number} id - El ID de la cita a editar.
+ * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
+ */
 function modEditAppointmentScheduling(id) {
     var funcion = '../controller/appointment_scheduling_controller.php';
     $.ajax({
@@ -122,7 +151,7 @@ function modEditAppointmentScheduling(id) {
         data: { function: 'modEditAppointmentScheduling', id: id },
         cache: false,
         success: function (data) {
-            $('#formAppointmentScheduling').html(data)
+            sanitizeAndSetHTML('#formAppointmentScheduling', data);
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
@@ -132,10 +161,17 @@ function modEditAppointmentScheduling(id) {
     return false;
 }
 
+/**
+ * Cierra el modal de agendamiento de citas.
+ */
 function closeModalAppointmentScheduling() {
     $('#modAppointmentScheduling').modal('hide');
 }
 
+/**
+ * Abre un modal que presumiblemente muestra un calendario o una vista de fechas
+ * para facilitar la selección de la fecha de la cita.
+ */
 function modScheduleDate() {
     $('#modScheduleDate').modal('show');
 }

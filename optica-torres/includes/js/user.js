@@ -1,3 +1,13 @@
+/**
+ * @file Gestiona la lógica de la interfaz de usuario para la administración de usuarios.
+ * Incluye funciones para cargar, editar, guardar, eliminar y reiniciar contraseñas de usuarios.
+ */
+
+/**
+ * Abre un modal para editar la información de un usuario específico.
+ * @param {string|number} id - El ID del usuario a editar.
+ * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
+ */
 function editUser(id) {
   $('#modEditarUsuario .close').css('display', 'none');
   $('#user_id').val(id);
@@ -17,7 +27,7 @@ function editUser(id) {
       $('#role_option').val('');
     },
     success: function (data) {
-      $('#formEditUser').html(data)
+      sanitizeAndSetHTML('#formEditUser', data)
     },
     error: function () {
       alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
@@ -26,6 +36,12 @@ function editUser(id) {
   $('#modEditarUsuario').modal('show');
   return false;
 }
+
+/**
+ * Carga la tabla de usuarios con filtros y paginación.
+ * @param {number} offset_pag - El desplazamiento para la consulta de paginación.
+ * @param {number} active_pag - El número de la página activa para resaltarla en la UI.
+ */
 function loadTable(offset_pag, active_pag) {
   var role = $('#role').val();
   var limite_pag = $('#num_reg').val();
@@ -49,7 +65,7 @@ function loadTable(offset_pag, active_pag) {
     },
     success: function (data) {
       $('#loading').hide();
-      $('#tablaUser').html(data);
+      sanitizeAndSetHTML('#tablaUser', data);
     },
     error: function () {
       $('#loading').hide();
@@ -57,6 +73,11 @@ function loadTable(offset_pag, active_pag) {
     }
   });
 }
+
+/**
+ * Guarda los cambios realizados en el formulario de edición de un usuario.
+ * @returns {boolean|void} Retorna false si la validación falla, de lo contrario no retorna nada.
+ */
 function saveUser() {
   var funcion = '../controller/user_controller.php';
   var user_active = 1;
@@ -109,6 +130,11 @@ function saveUser() {
     });
   }
 }
+
+/**
+ * Elimina un usuario del sistema, previa confirmación.
+ * @param {string|number} id - El ID del usuario a eliminar.
+ */
 function deleteUser(id) {
   var funcion = '../controller/user_controller.php';
   $.ajax({
@@ -133,6 +159,11 @@ function deleteUser(id) {
     }
   });
 }
+
+/**
+ * Inicia el proceso para enviar un correo de reinicio de contraseña a un usuario.
+ * @param {string|number} id - El ID del usuario al que se le enviará el correo.
+ */
 function resetUser(id) {
   var funcion = '../controller/user_controller.php';
   $.ajax({
@@ -153,6 +184,10 @@ function resetUser(id) {
     }
   });
 }
+
+/**
+ * Cierra el modal de edición de usuario.
+ */
 function closeModal() {
   $('#modEditarUsuario').modal('hide');
 }

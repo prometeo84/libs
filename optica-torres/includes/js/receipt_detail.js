@@ -1,4 +1,10 @@
 // file deepcode ignore DOMXSS: Sanitize in Class
+/**
+ * Abre un modal para ver y añadir detalles (pagos) a un recibo existente.
+ * @param {string|number} id - El ID del recibo principal.
+ * @param {number} amount_paid - El monto total del recibo.
+ * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
+ */
 function modReceiptDetail(id, amount_paid) {
   var funcion = '../controller/receipt_detail_controller.php';
   $.ajax({
@@ -7,7 +13,7 @@ function modReceiptDetail(id, amount_paid) {
     data: { function: 'modReceiptDetail', receipt_id: id, amount_paid: amount_paid },
     cache: false,
     success: function (data) {
-      $('#formReceiptDetail').html(data)
+      sanitizeAndSetHTML('#formReceiptDetail', data);
     },
     error: function () {
       alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
@@ -18,10 +24,17 @@ function modReceiptDetail(id, amount_paid) {
   return false;
 }
 
+/**
+ * Cierra el modal de detalle de recibo.
+ */
 function closeModalReceiptDetail() {
   $('#modReceiptDetail').modal('hide');
 }
 
+/**
+ * Guarda los nuevos detalles (pagos) de un recibo.
+ * Recopila los datos de todas las filas de pago nuevas, las convierte a JSON y las envía al servidor.
+ */
 function saveReceiptDetail() {
   var funcion = '../controller/receipt_detail_controller.php';
   let payments = [];
@@ -59,6 +72,10 @@ function saveReceiptDetail() {
   });
 }
 
+/**
+ * Añade una nueva fila a la tabla de pagos en el modal de detalle de recibo,
+ * permitiendo al usuario registrar un nuevo abono.
+ */
 function addReceiptDetail() {
   var cmbMethodPayment = $('#cmbMethodPayment').data('php-variable');
   var cmbBank = $('#cmbBank').data('php-variable');
@@ -90,10 +107,20 @@ function addReceiptDetail() {
   $('#r_count').val(rowCounter);
 }
 
+/**
+ * Elimina una fila de la tabla de pagos.
+ * @param {number} rowCounter - El identificador de la fila a eliminar.
+ */
 function deleteRow(rowCounter) {
   $("#row-" + rowCounter).closest("tr").remove();
 }
 
+/**
+ * Calcula el saldo restante después de ingresar un monto de pago.
+ * Se ejecuta en el evento `onblur` del campo de monto.
+ * @param {number|string} payment - El monto del pago actual.
+ * @param {number} id - El identificador de la fila actual.
+ */
 function calculateBalance(payment, id) {
   payment = parseFloat(payment);
   id = parseInt(id);
@@ -115,6 +142,10 @@ function calculateBalance(payment, id) {
   }
 }
 
+/**
+ * Carga el historial de pagos ya realizados para un recibo específico.
+ * @param {string|number} id - El ID del recibo.
+ */
 function loadTableReceiptDetail(id) {
   var funcion = '../controller/receipt_detail_controller.php';
   if (id != '') {
@@ -125,7 +156,7 @@ function loadTableReceiptDetail(id) {
       cache: false,
       success: function (data) {
         if (data.length > 0) {
-          $('#payment_history').html(data);
+          sanitizeAndSetHTML('#payment_history', data);
           if (parseFloat($("#r_amount_paid").val()) == parseFloat($("#r_payment_tmp").val())) {
             $('#addRecepitDetail').hide();
           } else {
@@ -144,6 +175,11 @@ function loadTableReceiptDetail(id) {
   }
 }
 
+/**
+ * Muestra u oculta el selector de banco dependiendo del método de pago seleccionado.
+ * Si el método es 'TRANSFERENCIA', muestra el selector; de lo contrario, lo oculta.
+ * @param {HTMLElement} selectElement - El elemento `<select>` del método de pago que cambió.
+ */
 function methodPayment(selectElement) {
   var $select = $(selectElement);
   var selectedText = $select.find('option:selected').text();

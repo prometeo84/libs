@@ -1,3 +1,14 @@
+/**
+ * @file Gestiona la lógica de la interfaz de usuario para la subida y gestión de archivos
+ * asociados a un Examen Físico Ocular.
+ */
+
+/**
+ * Abre un modal para subir y ver archivos adjuntos a un examen físico ocular.
+ * Oculta el modal principal del examen para mostrar el de archivos.
+ * @param {string|number} id - El ID del examen físico ocular al que se adjuntarán los archivos.
+ * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
+ */
 function openModalEyePhysicalFileExam(id) {
     var funcion = '../controller/eye_physical_exam_file_controller.php';
     $.ajax({
@@ -6,7 +17,7 @@ function openModalEyePhysicalFileExam(id) {
         data: { function: 'modalUploadFile', id: id },
         cache: false,
         success: function (data) {
-            $('#formUploadFile').html(data);
+            sanitizeAndSetHTML('#formUploadFile', data);
             loadTableEyePhysicalExamFile();
         },
         error: function () {
@@ -18,6 +29,11 @@ function openModalEyePhysicalFileExam(id) {
     return false;
 }
 
+/**
+ * Recopila los archivos seleccionados en el formulario y los envía al servidor
+ * para ser guardados y asociados con el examen físico ocular correspondiente.
+ * Utiliza FormData para manejar la subida de archivos.
+ */
 function uploadEyePhysicalFileExam() {
     var funcion = '../controller/eye_physical_exam_file_controller.php';
     var exam_id = $('#exam_id').val();
@@ -55,6 +71,10 @@ function uploadEyePhysicalFileExam() {
     });
 }
 
+/**
+ * Carga y muestra una tabla con la lista de archivos que ya han sido adjuntados
+ * al examen físico ocular actual.
+ */
 function loadTableEyePhysicalExamFile() {
     var funcion = '../controller/eye_physical_exam_file_controller.php';
     var exam_id = $('#exam_id').val();
@@ -69,7 +89,7 @@ function loadTableEyePhysicalExamFile() {
                 alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
             },
             success: function (data) {
-                $('#tablaEyePhysicalExamFile').html(data);
+                sanitizeAndSetHTML('#tablaEyePhysicalExamFile', data);
             },
             complete: function () {
                 alertPopUp(translate['success'], translate['information_success'], 'success');
@@ -77,10 +97,15 @@ function loadTableEyePhysicalExamFile() {
         });
     } else {
         data = translate['optometry_no_register'];
-        $('#tab-content-3').html(data);
+        sanitizeAndSetHTML('#tab-content-3', data);
     }
 }
 
+/**
+ * Envía una solicitud al servidor para eliminar un archivo adjunto específico.
+ * Tras la eliminación, recarga la tabla de archivos.
+ * @param {string|number} id - El ID del registro del archivo a eliminar.
+ */
 function deleteEyePhysicalExamFile(id) {
     var funcion = '../controller/eye_physical_exam_file_controller.php';
     $.ajax({
@@ -100,6 +125,10 @@ function deleteEyePhysicalExamFile(id) {
     });
 }
 
+/**
+ * Cierra el modal de subida de archivos y vuelve a mostrar el modal principal
+ * de edición del examen físico ocular, restaurando el contexto anterior.
+ */
 function closeModalEyePhysicalFileExam() {
     $('#modUploadFile').modal('hide');
     var id = $('#exam_id').val();

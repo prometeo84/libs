@@ -1,4 +1,15 @@
+/**
+ * @file Gestiona toda la lógica de la interfaz de usuario para la administración de pacientes.
+ * Incluye la búsqueda, creación, edición y navegación de las diferentes secciones de un paciente.
+ */
+
 // file deepcode ignore DOMXSS: Sanitize in Class
+/**
+ * Realiza una llamada AJAX para obtener las ciudades de una provincia seleccionada
+ * y poblar un elemento <select> con los resultados.
+ * @param {HTMLSelectElement} provinceName - El elemento <select> de la provincia que disparó el evento.
+ * @param {string} element - El ID del elemento <select> de la ciudad que se va a poblar.
+ */
 function readCity(provinceName, element) {
     var funcion = '../controller/catalogs_controller.php';
     $.ajax({
@@ -13,13 +24,18 @@ function readCity(provinceName, element) {
             }
         },
         success: function (data) {
-            $('#' + element).html(data)
+            sanitizeAndSetHTML('#' + element, data);
         },
         error: function (xhr, status) {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
         }
     });
 }
+
+/**
+ * Abre un modal para buscar pacientes existentes.
+ * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
+ */
 function modSearchPatient() {
     var funcion = '../controller/anamnesis_controller.php';
     $.ajax({
@@ -34,7 +50,7 @@ function modSearchPatient() {
             $('#tablaSearchPatient').html('');
         },
         success: function (data) {
-            $('#formSearchPatient').html(data)
+            sanitizeAndSetHTML('#formSearchPatient', data);
         },
         error: function (xhr, status) {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
@@ -43,6 +59,11 @@ function modSearchPatient() {
     $('#modSearchPatient').modal('show');
     return false;
 }
+
+/**
+ * Función de inicialización que comprueba si hay un paciente seleccionado.
+ * Si lo hay, carga su formulario de edición; de lo contrario, oculta el área de datos del paciente.
+ */
 function patientFrame() {
     var patientId = $('#patient_id').val();
     //$('.tabs').css('height', '10rem'); ya cambiado
@@ -53,22 +74,35 @@ function patientFrame() {
         showPatientEditFrame(patientId);
     }
 }
+
+/**
+ * Prepara la interfaz para insertar un nuevo paciente.
+ * Oculta el modal de búsqueda y carga el formulario de anamnesis en modo de creación.
+ */
 function showPatientInsertFrame() {
     var id = "";
     $('#modSearchPatient').modal('hide');
     loadTablePatient(id, 'INSERT');
-    //$('.tabs').css('height', '65rem');
-    //$('.tab-content').css('height', '96%');
     $('#TableAnamnesis').show();
 }
+
+/**
+ * Prepara la interfaz para editar un paciente existente.
+ * @param {string|number} id - El ID del paciente a editar.
+ */
 function showPatientEditFrame(id) {
     $('#modSearchPatient').modal('hide');
     $('#patient_id').val(id);
     loadTablePatient(id, 'EDIT');
-    //$('.tabs').css('height', '65rem');
-    //$('.tab-content').css('height', '96%');
     $('#TableAnamnesis').show();
 }
+
+/**
+ * Recopila todos los datos del formulario de anamnesis y los envía al servidor
+ * para crear un nuevo registro de paciente.
+ * Realiza una validación de campos requeridos antes de enviar.
+ * @returns {boolean|void} Retorna `false` si la validación falla.
+ */
 function savePatient() {
     var funcion = '../controller/anamnesis_controller.php';
     var lastname = $('#a_lastname').val();
@@ -147,6 +181,12 @@ function savePatient() {
     }
 }
 
+/**
+ * Recopila todos los datos del formulario de anamnesis y los envía al servidor
+ * para actualizar un registro de paciente existente.
+ * Realiza una validación de campos requeridos antes de enviar.
+ * @returns {boolean|void} Retorna `false` si la validación falla.
+ */
 function editPatient() {
     var funcion = '../controller/anamnesis_controller.php';
     var id = $('#patient_id').val();
@@ -227,6 +267,12 @@ function editPatient() {
     }
 }
 
+/**
+ * Carga la tabla de resultados de búsqueda de pacientes con paginación.
+ * Se basa en los criterios introducidos en el modal de búsqueda.
+ * @param {number} offset_pag - El desplazamiento para la consulta de paginación.
+ * @param {number} active_pag - El número de la página activa para resaltarla en la UI.
+ */
 function loadTableSearch(offset_pag, active_pag) {
     var s_id_number = $('#s_id_number').val();
     var s_lastname = $('#s_lastname').val();
@@ -248,7 +294,7 @@ function loadTableSearch(offset_pag, active_pag) {
         },
         success: function (data) {
             $('#loading').hide();
-            $('#tablaSearchPatient').html(data);
+            sanitizeAndSetHTML('#tablaSearchPatient', data);
         },
         error: function (xhr, status) {
             $('#loading').hide();
@@ -257,6 +303,11 @@ function loadTableSearch(offset_pag, active_pag) {
     });
 }
 
+/**
+ * Carga el formulario principal de datos del paciente (anamnesis) en la primera pestaña.
+ * @param {string|number} id - El ID del paciente a cargar. Puede ser vacío para un nuevo paciente.
+ * @param {string} mode - El modo de operación ('INSERT' o 'EDIT').
+ */
 function loadTablePatient(id, mode) {
     var funcion = '../controller/anamnesis_controller.php';
     $.ajax({
@@ -268,7 +319,7 @@ function loadTablePatient(id, mode) {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
         },
         success: function (data) {
-            $('#tab-content-1').html(data);
+            sanitizeAndSetHTML('#tab-content-1', data);
         },
         complete: function (xhr, status) {
             alertPopUp(translate['success'], translate['information_success'], 'success');
@@ -276,18 +327,34 @@ function loadTablePatient(id, mode) {
     });
 }
 
+/**
+ * Cierra el modal de búsqueda de pacientes.
+ */
 function closeModalSearchPatient() {
     $('#modSearchPatient').modal('hide');
 }
 
+/**
+ * Cierra el modal de optometría.
+ * Nota: El nombre de la función parece tener un error tipográfico ('closeModalcloseModal...').
+ */
 function closeModalcloseModalOptometry() {
     $('#modOptometry').modal('hide');
 }
 
+/**
+ * Limpia el ID del paciente del campo oculto, terminando la "sesión" del paciente en la UI.
+ */
 function sessionPatient() {
     $('#patient_id').val('');
 }
 
+/**
+ * Gestiona la lógica de la interfaz para cambiar entre las pestañas de la vista del paciente.
+ * Oculta todo el contenido de las pestañas y muestra solo el de la pestaña activa.
+ * @param {Event} evt - El objeto del evento click.
+ * @param {string} tabName - El ID del contenido de la pestaña a mostrar.
+ */
 function openTab(evt, tabName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -303,6 +370,11 @@ function openTab(evt, tabName) {
     evt.currentTarget.className += " active";
 }
 
+/**
+ * Función auxiliar llamada por `openTab` para cargar dinámicamente el contenido
+ * de la pestaña recién activada.
+ * @param {string} tabName - El ID de la pestaña que se ha activado.
+ */
 function showDiv(tabName) {
     switch (tabName) {
         case 'tab2':

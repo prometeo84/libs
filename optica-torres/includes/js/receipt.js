@@ -1,4 +1,13 @@
+/**
+ * @file Gestiona la lógica de la interfaz de usuario para los recibos de pago.
+ * Incluye funciones para cargar, crear, editar y guardar recibos.
+ */
+
 // file deepcode ignore DOMXSS: Sanitize in Class
+/**
+ * Abre un modal para crear un nuevo recibo.
+ * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
+ */
 function modReceipt() {
     var funcion = '../controller/receipt_controller.php';
     $.ajax({
@@ -7,7 +16,7 @@ function modReceipt() {
         data: { function: 'modReceipt' },
         cache: false,
         success: function (data) {
-            $('#formReceipt').html(data)
+            sanitizeAndSetHTML('#formReceipt', data);
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
@@ -17,6 +26,10 @@ function modReceipt() {
     return false;
 }
 
+/**
+ * Carga la tabla de recibos para el paciente actualmente seleccionado.
+ * Realiza una llamada AJAX para obtener el HTML de la tabla y lo inserta en el DOM.
+ */
 function loadTableReceipt() {
     var funcion = '../controller/receipt_controller.php';
     var id = $('#patient_id').val();
@@ -31,7 +44,7 @@ function loadTableReceipt() {
                 alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
             },
             success: function (data) {
-                $('#tab-content-7').html(data);
+                sanitizeAndSetHTML('#tab-content-7', data);
             },
             complete: function () {
                 alertPopUp(translate['success'], translate['information_success'], 'success');
@@ -44,6 +57,9 @@ function loadTableReceipt() {
     }
 }
 
+/**
+ * Guarda un nuevo recibo. Recopila los datos del formulario y los envía al servidor.
+ */
 function saveReceipt() {
     var funcion = '../controller/receipt_controller.php';
     var patient_id = $('#patient_id').val();
@@ -83,6 +99,10 @@ function saveReceipt() {
     });
 }
 
+/**
+ * Guarda los cambios de un recibo existente.
+ * @param {string|number} id - El ID del recibo que se está editando.
+ */
 function editReceipt(id) {
     var funcion = '../controller/receipt_controller.php';
     var patient_id = $('#patient_id').val();
@@ -123,6 +143,11 @@ function editReceipt(id) {
     });
 }
 
+/**
+ * Abre un modal para editar un recibo existente, precargando sus datos.
+ * @param {string|number} id - El ID del recibo a editar.
+ * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
+ */
 function modEditReceipt(id) {
     var funcion = '../controller/receipt_controller.php';
     $.ajax({
@@ -131,7 +156,7 @@ function modEditReceipt(id) {
         data: { function: 'modEditReceipt', id: id },
         cache: false,
         success: function (data) {
-            $('#formReceipt').html(data)
+            sanitizeAndSetHTML('#formReceipt', data);
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
@@ -141,6 +166,9 @@ function modEditReceipt(id) {
     return false;
 }
 
+/**
+ * Cierra el modal de creación/edición de recibos.
+ */
 function closeModalReceipt() {
     $('#modReceipt').modal('hide');
 }

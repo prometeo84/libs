@@ -1,14 +1,36 @@
+/**
+ * @file Gestiona la creación de diversos documentos PDF en toda la aplicación.
+ */
+
+/**
+ * Recopila datos de un formulario, los valida y los envía al servidor para generar un documento PDF.
+ *
+ * Esta función actúa como un controlador central para la generación de múltiples tipos de PDFs.
+ * Utiliza un `switch` basado en el parámetro `type_pdf` para determinar qué campos de formulario
+ * leer y qué validaciones aplicar.
+ *
+ * Una vez recopilados los datos, realiza una llamada AJAX a `pdf_controller.php`. Si la creación
+ * es exitosa, el servidor devuelve un ID que se utiliza para cargar el PDF en un modal
+ * a través de las funciones `loadRecipePDF` o `loadDocumentPDF`.
+ *
+ * @param {string} type_pdf - El tipo de PDF a generar (ej. 'RECIPE', 'ATTENDANCE', 'VISUAL', 'HISTORIAL_MEDICO'). Determina el caso del switch a ejecutar.
+ * @param {string|number} op - Un parámetro de operación multipropósito. Puede ser el nombre de una firma, un ID de detalle, etc., dependiendo del contexto.
+ * @returns {boolean|void} Retorna `false` si la validación inicial falla, para detener la ejecución.
+ */
 function newPDF(type_pdf, op) {
     var funcion = '../controller/pdf_controller.php';
     var patient_id = $('#patient_id').val();
     var values = {};
     var validate = true;
+    var foo_value = 'MUIFACL6qgAh_qfJ2QfZHet5UlUYS0AJTSCXQZkSO_L1dZL6Ayiny_eocJUozTfEeLA05mRC6719eadtogvzj4X7pQ4JXlCpZK-De1s3J12ypsOE7ARDRSIuYbdSoVi6R4Q6Wt05_vb4MuNf_OsfeP-6pJ0Z0J30YqX56U8=';
     switch (type_pdf) {
         case 'RECIPE':
             var name = $('#r_name').val();
             var date = $('#r_date').val();
             var rp = $('#r_rp').val();
             var indications = $('#r_indications').val();
+            var warning_signs = $('#r_warning_signs').val();
+            var pharmacological_recommendations = $('#r_pharmacological_recommendations').val();
             var city = $('#r_city').val();
             var age = $('#r_age').val();
             var month = $('#r_month').val();
@@ -36,6 +58,8 @@ function newPDF(type_pdf, op) {
             values['genre'] = genre;
             values['allergy'] = allergy;
             values['foot_signature_name'] = foot_signature_name;
+            values['warning_signs'] = warning_signs;
+            values['pharmacological_recommendations'] = pharmacological_recommendations;
             if (date == '' || rp == '' || indications == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 validate = false;
@@ -274,7 +298,7 @@ function newPDF(type_pdf, op) {
             }
             break;
         case 'ANAMNESIS_POR_USUARIO':
-            var patient_id = '+Q==';
+            var patient_id = foo_value;
             var id_number = 0;
             var username = $('#username').val();
             var s_date = $('#s_date').val();
@@ -301,7 +325,7 @@ function newPDF(type_pdf, op) {
             }
             break;
         case 'EXAMEN_OFTALMOLOGICO_POR_USUARIO':
-            var patient_id = '+Q==';
+            var patient_id = foo_value;
             var id_number = 0;
             var username = $('#username').val();
             var s_date = $('#s_date').val();
@@ -328,7 +352,7 @@ function newPDF(type_pdf, op) {
             }
             break;
         case 'HISTORIAL_MEDICO':
-            var patient_id = '+Q==';
+            var patient_id = foo_value;
             var id_number = $('#id_number').val();
             values['id_number'] = id_number;
             values['patient_id'] = patient_id;
@@ -338,7 +362,7 @@ function newPDF(type_pdf, op) {
             }
             break;
         case 'REPORTE_MENSUAL_AGENDA':
-            var patient_id = '+Q==';
+            var patient_id = foo_value;
             var id_month = $('#month').val();
             values['id_month'] = id_month;
             values['patient_id'] = patient_id;
@@ -348,7 +372,7 @@ function newPDF(type_pdf, op) {
             }
             break;
         case 'REPORTE_COBROS':
-            var patient_id = '+Q==';
+            var patient_id = foo_value;
             var id_number = $('#id_number').val();
             var s_date = $('#s_date').val();
             var f_date = $('#f_date').val();
@@ -375,7 +399,7 @@ function newPDF(type_pdf, op) {
             }
             break;
         case 'RECEIPT':
-            var patient_id = '+Q==';
+            var patient_id = foo_value;
             values['receipt_detail_id'] = op;
             if (id_month == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');

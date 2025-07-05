@@ -1,3 +1,14 @@
+/**
+ * @file Gestiona la lógica de la página de reinicio de contraseña.
+ * Se encarga de enviar la nueva contraseña al servidor y de inicializar la validación de la fortaleza de la contraseña.
+ */
+
+/**
+ * Envía la nueva contraseña y su confirmación al servidor para ser guardada.
+ * Realiza una llamada AJAX al controlador `reset_password_controller.php`.
+ * Muestra un mensaje de éxito y redirige al login si el proceso es correcto,
+ * o un mensaje de error en caso contrario.
+ */
 function saveRegister() {
   var funcion = '../controller/reset_password_controller.php';
   var userId = $('#userId').val();
@@ -24,58 +35,13 @@ function saveRegister() {
     }
   });
 }
+
+/**
+ * Se ejecuta cuando el DOM está completamente cargado.
+ * Inicializa la validación de fortaleza de la contraseña en los campos de tipo 'password',
+ * utilizando la función `setupPasswordValidation` de `util.js`.
+ * Habilita o deshabilita el botón de envío (`#submit`) según se cumplan los criterios.
+ */
 $(document).ready(function () {
-  $('input[type=password]').keyup(function () {
-    var pswd = $(this).val();
-    var okpswd = 0;
-    //validate the length
-    if (pswd.length < 6) {
-      okpswd = okpswd - 1;
-      $('#length').removeClass('valid').addClass('invalid');
-    } else {
-      $('#length').removeClass('invalid').addClass('valid');
-      okpswd = okpswd + 1;
-    }
-    //validate letter
-    if (pswd.match(/[A-z]/)) {
-      $('#letter').removeClass('invalid').addClass('valid');
-      okpswd = okpswd + 1;
-    } else {
-      $('#letter').removeClass('valid').addClass('invalid');
-      okpswd = okpswd - 1;
-    }
-    //validate capital letter
-    if (pswd.match(/[A-Z]/)) {
-      $('#capital').removeClass('invalid').addClass('valid');
-      okpswd = okpswd + 1;
-    } else {
-      $('#capital').removeClass('valid').addClass('invalid');
-      okpswd = okpswd - 1;
-    }
-    //validate number
-    if (pswd.match(/\d/)) {
-      $('#number').removeClass('invalid').addClass('valid');
-      okpswd = okpswd + 1;
-    } else {
-      $('#number').removeClass('valid').addClass('invalid');
-      okpswd = okpswd - 1;
-    }
-    //validate space
-    if (pswd.match(/[^a-zA-Z0-9\-\/]/)) {
-      $('#space').removeClass('invalid').addClass('valid');
-      okpswd = okpswd + 1;
-    } else {
-      $('#space').removeClass('valid').addClass('invalid');
-      okpswd = okpswd - 1;
-    }
-    if (okpswd >= 4) {
-      $('#submit').prop('disabled', false);
-    } else {
-      $('#submit').prop('disabled', true);
-    }
-  }).focus(function () {
-    $('#pswd_info').show();
-  }).blur(function () {
-    $('#pswd_info').hide();
-  });
+  setupPasswordValidation('input[type=password]', '#submit');
 });

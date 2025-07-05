@@ -1,3 +1,14 @@
+/**
+ * @file Gestiona la lógica de la página de registro de nuevos usuarios.
+ * Se encarga de enviar los datos del formulario al servidor y de inicializar la validación de la contraseña.
+ */
+
+/**
+ * Recopila los datos del formulario de registro y los envía al servidor para crear un nuevo usuario.
+ * Realiza una llamada AJAX al controlador `register_controller.php`.
+ * Si el controlador devuelve un mensaje, lo muestra como una advertencia (ej. "el usuario ya existe").
+ * Si el proceso es exitoso, muestra un mensaje de éxito y recarga la página.
+ */
 function saveRegister() {
   var funcion = '../controller/register_controller.php';
   var user_role = $('#role').val();
@@ -33,60 +44,14 @@ function saveRegister() {
     }
   });
 }
+
+/**
+ * Se ejecuta cuando el DOM está completamente cargado.
+ * Limpia los campos de contraseña y configura la validación de fortaleza de la contraseña en tiempo real,
+ * utilizando la función `setupPasswordValidation` de `util.js`.
+ */
 $(document).ready(function () {
   $('#password').html('');
   $('#confirm_password').val('');
-  $('input[type=password]').keyup(function () {
-    var pswd = $(this).val();
-    var okpswd = 0;
-    //validate the length
-    if (pswd.length < 6) {
-      okpswd = okpswd - 1;
-      $('#length').removeClass('valid').addClass('invalid');
-    } else {
-      $('#length').removeClass('invalid').addClass('valid');
-      okpswd = okpswd + 1;
-    }
-    //validate letter
-    if (pswd.match(/[A-z]/)) {
-      $('#letter').removeClass('invalid').addClass('valid');
-      okpswd = okpswd + 1;
-    } else {
-      $('#letter').removeClass('valid').addClass('invalid');
-      okpswd = okpswd - 1;
-    }
-    //validate capital letter
-    if (pswd.match(/[A-Z]/)) {
-      $('#capital').removeClass('invalid').addClass('valid');
-      okpswd = okpswd + 1;
-    } else {
-      $('#capital').removeClass('valid').addClass('invalid');
-      okpswd = okpswd - 1;
-    }
-    //validate number
-    if (pswd.match(/\d/)) {
-      $('#number').removeClass('invalid').addClass('valid');
-      okpswd = okpswd + 1;
-    } else {
-      $('#number').removeClass('valid').addClass('invalid');
-      okpswd = okpswd - 1;
-    }
-    //validate space
-    if (pswd.match(/[^a-zA-Z0-9\-\/]/)) {
-      $('#space').removeClass('invalid').addClass('valid');
-      okpswd = okpswd + 1;
-    } else {
-      $('#space').removeClass('valid').addClass('invalid');
-      okpswd = okpswd - 1;
-    }
-    if (okpswd >= 4) {
-      $('#submit').prop('disabled', false);
-    } else {
-      $('#submit').prop('disabled', true);
-    }
-  }).focus(function () {
-    $('#pswd_info').show();
-  }).blur(function () {
-    $('#pswd_info').hide();
-  });
+  setupPasswordValidation('input[type=password]', '#submit');
 });

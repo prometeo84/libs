@@ -12,20 +12,22 @@
 function loadTable(offset_pag, active_pag) {
     var limite_pag = 10;
     var c_catalogs = $('#c_catalogs').val();
-    var c_name = $('#c_name').val();
-    var c_value = $('#c_value').val();
+    var c_search_term = $('#c_search_term').val();
+    var c_type_medication = $('#c_type_medication').val();
+    var c_medication_name = $('#c_medication_name').val();
+    var c_medication_presentation = $('#c_medication_presentation').val();
     var c_active = $('#c_active').val();
-    var funcion = '../controller/catalogs_controller.php';
+    var funcion = '../controller/ophthalmological_medications_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'loadTableCatalogs', limit: limite_pag, offset: offset_pag, active_p: active_pag, catalog_id: c_catalogs, name: c_name, value: c_value, active: c_active },
+        data: { function: 'loadTableMedications', limit: limite_pag, offset: offset_pag, active_p: active_pag, catalog_id: c_catalogs, search_term: c_search_term, type_medication: c_type_medication, medication_name: c_medication_name, medication_presentation: c_medication_presentation, active: c_active },
         cache: false,
         beforeSend: function () {
             $('#loading').show();
         },
         success: function (data) {
-            sanitizeAndSetHTML('#tableCatalogs', data);
+            sanitizeAndSetHTML('#tableMedications', data);
             $('#loading').hide();
         },
         error: function () {
@@ -39,16 +41,16 @@ function loadTable(offset_pag, active_pag) {
  * Abre un modal para crear un nuevo ítem dentro del catálogo padre actualmente seleccionado.
  * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
  */
-function modNewCatalogs() {
+function modNewMedications() {
     var catalog_id = $('#c_catalogs').val();
-    var funcion = '../controller/catalogs_controller.php';
+    var funcion = '../controller/ophthalmological_medications_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'modalNewCatalogs', catalog_id: catalog_id },
+        data: { function: 'modalNewMedicationss', catalog_id: catalog_id },
         cache: false,
         success: function (data) {
-            sanitizeAndSetHTML('#formNewCatalogs', data);
+            sanitizeAndSetHTML('#formNewMedications', data);
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
@@ -57,7 +59,7 @@ function modNewCatalogs() {
             $('#catalog').prop('required', true);
         }
     });
-    $('#modNewCatalogs').modal('show');
+    $('#modNewMedications').modal('show');
     return false;
 }
 
@@ -65,16 +67,17 @@ function modNewCatalogs() {
  * Recopila los datos del formulario de nuevo ítem y los envía al servidor para ser guardados.
  * Realiza una validación de campos requeridos antes de enviar.
  */
-function saveCatalogs() {
-    var n_catalog_id = $('#c_catalogs').val();
-    var n_name = $('#n_name').val();
-    var n_value = $('#n_value').val();
-    var n_active = $('#n_active').val();
-    var funcion = '../controller/catalogs_controller.php';
+function saveMedications() {
+    var n_catalog_id = $('#n_catalog_id').val();
+    var n_search_term = $('#n_search_term').val();
+    var n_type_medication = $('#n_type_medication').val();
+    var n_medication_name = $('#n_medication_name').val();
+    var n_medication_presentation = $('#n_medication_presentation').val();
+    var funcion = '../controller/ophthalmological_medications_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: { function: 'newCatalogs', catalog_id: n_catalog_id, name: n_name, value: n_value, active: n_active },
+        data: { function: 'newMedications', catalog_id: n_catalog_id, search_term: n_search_term, type_medication: n_type_medication, medication_name: n_medication_name, medication_presentation: n_medication_presentation },
         cache: false,
         beforeSend: function (xhr) {
             if (n_catalog_id == '') {
@@ -82,19 +85,19 @@ function saveCatalogs() {
                 xhr.abort();
                 return false;
             }
-            if (n_name == '' || n_value == '') {
+            if (n_search_term == '' || n_medication_name == '' || n_medication_presentation == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 xhr.abort();
                 return false;
             }
         },
         success: function () {
-            $('#modNewCatalogs').modal('hide');
+            $('#modNewMedications').modal('hide');
             loadTable(0, 1);
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-            $('#modNewCatalogs').modal('hide');
+            $('#modNewMedications').modal('hide');
         },
         complete: function () {
             alertPopUp(translate['success'], translate['saved_catalog'], 'success');
@@ -200,13 +203,13 @@ function deleteCatalogs(id) {
 /**
  * Cierra el modal de creación de nuevos ítems de catálogo.
  */
-function closeModalNewCatalogs() {
-    $('#modNewCatalogs').modal('hide');
+function closeModalNewMedications() {
+    $('#modNewMedications').modal('hide');
 }
 
 /**
  * Cierra el modal de edición de ítems de catálogo.
  */
-function closeModalEditCatalogs() {
-    $('#modEditCatalogs').modal('hide');
+function closeModalEditMedications() {
+    $('#modEditMedications').modal('hide');
 }
