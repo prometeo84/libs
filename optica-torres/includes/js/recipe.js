@@ -301,8 +301,7 @@ $(document).ready(function () {
                     var newSegment = words.join(' ');
                     // Añade el segmento corregido de nuevo a la lista de términos
                     terms.push(newSegment);
-                    // añadir un espacio y coma al final para el siguiente item
-                    terms.push("");
+                    // Une los términos. El usuario deberá añadir la coma manualmente para el siguiente.
                     this.value = terms.join(", ");
                     return false;
                 }
@@ -313,31 +312,13 @@ $(document).ready(function () {
                 }
 
                 var label = item.label;
-                var prefixHtml = '';
-                var mainText = label;
+                // Sanitizar la etiqueta completa primero para evitar inyección de HTML
+                var safeLabel = $("<div>").text(label).html();
 
-                // Expresión regular para encontrar "Marca:" o "Generico:" al inicio, con espacios opcionales.
-                var prefixRegex = /^(Marca:|Genérico:)(\s*)/i;
-                var match = label.match(prefixRegex);
+                // Expresión regular para encontrar "Marca:" o "Genérico:" en cualquier parte del texto
+                // y ponerlos en negrita. La 'g' es para reemplazo global, 'i' para no distinguir mayúsculas/minúsculas.
+                var finalHtml = safeLabel.replace(/(Marca:|Genérico:)/gi, '<b>$1</b>');
 
-                // 1. Si se encuentra un prefijo, lo separamos y lo ponemos en negrita.
-                if (match) {
-                    // match[1] es "Marca:" o "Generico:"
-                    // match[2] es el espacio que le sigue, ej. " "
-                    var safePrefix = $("<div>").text(match[1]).html();
-                    var safeSpace = $("<div>").text(match[2]).html();
-                    prefixHtml = '<b>' + safePrefix + '</b>' + safeSpace;
-                    // El resto del texto es lo que se mostrará normalmente.
-                    mainText = label.substring(match[0].length);
-                }
-
-                // 2. Sanitizar el texto principal.
-                // El resaltado del término de búsqueda se ha eliminado por petición del usuario,
-                // para que solo el prefijo ("Marca:", "Generico:") aparezca en negrita.
-                var safeMainText = $("<div>").text(mainText).html();
-
-                // 3. Construir el HTML final y añadirlo a la lista.
-                var finalHtml = prefixHtml + safeMainText;
                 return $("<li>").append('<div>' + finalHtml + '</div>').appendTo(ul);
             };
     }
