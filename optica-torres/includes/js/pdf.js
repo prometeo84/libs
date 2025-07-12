@@ -57,9 +57,9 @@ function newPDF(type_pdf, op) {
             values['id_number'] = id_number;
             values['genre'] = genre;
             values['allergy'] = allergy;
-            values['foot_signature_name'] = foot_signature_name;
             values['warning_signs'] = warning_signs;
             values['pharmacological_recommendations'] = pharmacological_recommendations;
+            values['foot_signature_name'] = foot_signature_name;
             if (date == '' || rp == '' || indications == '') {
                 alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
                 validate = false;
