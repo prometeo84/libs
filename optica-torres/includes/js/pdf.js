@@ -61,10 +61,10 @@ function newPDF(type_pdf, op) {
       values[10] = foot_signature;
       values[11] = id_number;
       values[12] = foot_signature_name;
-      values[13] = ""; // Reservado
-      values[14] = ""; // Reservado
-      values[15] = ""; // Reservado
-      values[16] = ""; // Reservado
+      values[13] = "-"; // Placeholder (NO usar vacío)
+      values[14] = "-"; // Placeholder (NO usar vacío)
+      values[15] = "-"; // Placeholder (NO usar vacío)
+      values[16] = "-"; // Placeholder (NO usar vacío)
       values[17] = genre;
       values[18] = allergy;
       values[19] = warning_signs;
