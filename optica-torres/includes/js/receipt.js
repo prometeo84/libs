@@ -144,10 +144,22 @@ $(document).ready(function () {
 
     function setupAutocomplete(selector, catalogName) {
         function split(val) {
-            return val.split(/,\s*/);
+            // Separar por comas o saltos de línea para obtener el segmento actual
+            return val.split(/[,\n]+/);
         }
         function extractLast(term) {
-            return split(term).pop().trim().split(' ').pop();
+            // Toma el último segmento (línea o parte separada por comas)
+            var segment = split(term).pop();
+            if (!segment) return '';
+            segment = segment.trim();
+            if (segment === '') return '';
+            // Quitar caracteres de puntuación al inicio (p. ej. '-', '*')
+            segment = segment.replace(/^[^\p{L}\p{N}]+/u, '');
+            // Dividir por cualquier espacio en blanco (incluye saltos de línea)
+            var words = segment.split(/\s+/);
+            // Devolver la última palabra (token) limpio de signos finales
+            var last = (words.pop() || '').replace(/[^\p{L}\p{N}]+$/u, '');
+            return last;
         }
         $(selector)
             .on("keydown", function (event) {
@@ -159,6 +171,11 @@ $(document).ready(function () {
                 minLength: 2,
                 source: function (request, response) {
                     var term = extractLast(request.term);
+                    // Evita solicitudes cuando el token actual es muy corto
+                    if (!term || term.length < 2) {
+                        response([]);
+                        return;
+                    }
                     $.ajax({
                         url: "../controller/autocomplete_controller.php",
                         dataType: "json",
@@ -168,7 +185,7 @@ $(document).ready(function () {
                         },
                         success: function (data) {
                             if (!data || data.length === 0) {
-                                
+                                response([]);
                             } else {
                                 response(data);
                             }
