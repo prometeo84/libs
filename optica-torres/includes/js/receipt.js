@@ -9,21 +9,25 @@
  * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
  */
 function modReceipt() {
-    var funcion = '../controller/receipt_controller.php';
-    $.ajax({
-        type: 'POST',
-        url: funcion,
-        data: { function: 'modReceipt' },
-        cache: false,
-        success: function (data) {
-            sanitizeAndSetHTML('#formReceipt', data);
-        },
-        error: function () {
-            alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-        }
-    });
-    $('#modReceipt').modal('show');
-    return false;
+  var funcion = "../controller/receipt_controller.php";
+  $.ajax({
+    type: "POST",
+    url: funcion,
+    data: { function: "modReceipt" },
+    cache: false,
+    success: function (data) {
+      sanitizeAndSetHTML("#formReceipt", data);
+    },
+    error: function () {
+      alertPopUp(
+        translate["error"],
+        translate["error_execution_proccess"],
+        "error",
+      );
+    },
+  });
+  $("#modReceipt").modal("show");
+  return false;
 }
 
 /**
@@ -31,72 +35,96 @@ function modReceipt() {
  * Realiza una llamada AJAX para obtener el HTML de la tabla y lo inserta en el DOM.
  */
 function loadTableReceipt() {
-    var funcion = '../controller/receipt_controller.php';
-    var id = $('#patient_id').val();
-    if (id != '') {
-        $('#btnModNewReceipt').show();
-        $.ajax({
-            type: 'POST',
-            url: funcion,
-            data: { function: 'loadTableReceipt', patient_id: id, limit: 50, offset: 0, active_p: 1 },
-            cache: false,
-            error: function () {
-                alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-            },
-            success: function (data) {
-                sanitizeAndSetHTML('#tab-content-7', data);
-            },
-            complete: function () {
-                alertPopUp(translate['success'], translate['information_success'], 'success');
-            }
-        });
-    } else {
-        $('#btnReceipt').hide();
-        $("#PatientTabs").load(location.href + " #PatientTabs");
-        alertPopUp(translate['error'], translate['optometry_id_user'], 'error');
-    }
+  console.log("[DEBUG] loadTableReceipt() iniciando...");
+  var funcion = "../controller/receipt_controller.php";
+  var id = $("#patient_id").val();
+  console.log("[DEBUG] patient_id:", id);
+  
+  if (id != "") {
+    $("#btnModNewReceipt").show();
+    console.log("[DEBUG] Enviando AJAX a:", funcion);
+    $.ajax({
+      type: "POST",
+      url: funcion,
+      data: {
+        function: "loadTableReceipt",
+        patient_id: id,
+        limit: 50,
+        offset: 0,
+        active_p: 1,
+      },
+      cache: false,
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.error("[DEBUG] Error en AJAX:", textStatus, errorThrown);
+        console.error("[DEBUG] Response:", jqXHR.responseText);
+        alertPopUp(
+          translate["error"],
+          translate["error_execution_proccess"],
+          "error",
+        );
+      },
+      success: function (data) {
+        console.log("[DEBUG] Respuesta recibida, longitud:", data.length);
+        console.log("[DEBUG] Primeros 500 chars:", data.substring(0, 500));
+        sanitizeAndSetHTML("#tab-content-7", data);
+        console.log("[DEBUG] Contenido insertado en #tab-content-7");
+      },
+    });
+  } else {
+    $("#btnReceipt").hide();
+    $("#PatientTabs").load(location.href + " #PatientTabs");
+    alertPopUp(translate["error"], translate["optometry_id_user"], "error");
+  }
 }
 
 /**
  * Guarda un nuevo recibo. Recopila los datos del formulario y los envía al servidor.
  */
 function saveReceipt() {
-    var funcion = '../controller/receipt_controller.php';
-    var patient_id = $('#patient_id').val();
-    var description = $('#r_description').val();
-    var branch_id = $('#r_branch').val();
-    var delivery_date = $('#r_delivery_date').val();
-    var retirement_date = $('#r_retirement_date').val();
-    var amount_paid = $('#r_amount_paid').val();
-    var values = {};
-    values['function'] = 'newReceipt';
-    values['patient_id'] = patient_id;
-    values['description'] = description;
-    values['branch_id'] = branch_id;
-    values['delivery_date'] = delivery_date;
-    values['retirement_date'] = retirement_date;
-    values['amount_paid'] = amount_paid;
-    $.ajax({
-        type: 'POST',
-        url: funcion,
-        data: values,
-        cache: false,
-        beforeSend: function (xhr) {
-            if (branch_id == '' || delivery_date == '' || amount_paid == '') {
-                alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
-                xhr.abort();
-                return false;
-            }
-        },
-        error: function () {
-            alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-        },
-        complete: function () {
-            alertPopUp(translate['success'], translate['insert_register'], 'success');
-            $('#modReceipt').modal('hide');
-            loadTableReceipt();
-        }
-    });
+  var funcion = "../controller/receipt_controller.php";
+  var patient_id = $("#patient_id").val();
+  var description = $("#r_description").val();
+  var branch_id = $("#r_branch").val();
+  var delivery_date = $("#r_delivery_date").val();
+  var retirement_date = $("#r_retirement_date").val();
+  var amount_paid = $("#r_amount_paid").val();
+  var values = {};
+  values["function"] = "newReceipt";
+  values["patient_id"] = patient_id;
+  values["description"] = description;
+  values["branch_id"] = branch_id;
+  values["delivery_date"] = delivery_date;
+  values["retirement_date"] = retirement_date;
+  values["amount_paid"] = amount_paid;
+  $.ajax({
+    type: "POST",
+    url: funcion,
+    data: values,
+    cache: false,
+    beforeSend: function (xhr) {
+      if (branch_id == "" || delivery_date == "" || amount_paid == "") {
+        alertPopUp(
+          translate["advertice"],
+          translate["required_fields"],
+          "warning",
+        );
+        xhr.abort();
+        return false;
+      }
+    },
+    error: function () {
+      alertPopUp(
+        translate["error"],
+        translate["error_execution_proccess"],
+        "error",
+      );
+    },
+    complete: function () {
+      alertPopUp(translate["success"], translate["insert_register"], "success");
+      $("#modReceipt").modal("hide");
+      loadTableReceipt();
+    },
+  });
 }
 
 /**
@@ -104,43 +132,51 @@ function saveReceipt() {
  * @param {string|number} id - El ID del recibo que se está editando.
  */
 function editReceipt(id) {
-    var funcion = '../controller/receipt_controller.php';
-    var patient_id = $('#patient_id').val();
-    var description = $('#r_description').val();
-    var branch_id = $('#r_branch').val();
-    var delivery_date = $('#r_delivery_date').val();
-    var retirement_date = $('#r_retirement_date').val();
-    var amount_paid = $('#r_amount_paid').val();
-    var values = {};
-    values['id'] = id;
-    values['function'] = 'editReceipt';
-    values['patient_id'] = patient_id;
-    values['description'] = description;
-    values['branch_id'] = branch_id;
-    values['delivery_date'] = delivery_date;
-    values['retirement_date'] = retirement_date;
-    values['amount_paid'] = amount_paid;
-    $.ajax({
-        type: 'POST',
-        url: funcion,
-        data: values,
-        cache: false,
-        beforeSend: function (xhr) {
-            if (branch_id == '' || delivery_date == '' || amount_paid == '') {
-                alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
-                xhr.abort();
-                return false;
-            }
-        },
-        error: function () {
-            alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-        },
-        complete: function () {
-            alertPopUp(translate['success'], translate['insert_register'], 'success');
-            $('#modReceipt').modal('hide');
-            loadTableReceipt();
-        }
-    });
+  var funcion = "../controller/receipt_controller.php";
+  var patient_id = $("#patient_id").val();
+  var description = $("#r_description").val();
+  var branch_id = $("#r_branch").val();
+  var delivery_date = $("#r_delivery_date").val();
+  var retirement_date = $("#r_retirement_date").val();
+  var amount_paid = $("#r_amount_paid").val();
+  var values = {};
+  values["id"] = id;
+  values["function"] = "editReceipt";
+  values["patient_id"] = patient_id;
+  values["description"] = description;
+  values["branch_id"] = branch_id;
+  values["delivery_date"] = delivery_date;
+  values["retirement_date"] = retirement_date;
+  values["amount_paid"] = amount_paid;
+  $.ajax({
+    type: "POST",
+    url: funcion,
+    data: values,
+    cache: false,
+    beforeSend: function (xhr) {
+      if (branch_id == "" || delivery_date == "" || amount_paid == "") {
+        alertPopUp(
+          translate["advertice"],
+          translate["required_fields"],
+          "warning",
+        );
+        xhr.abort();
+        return false;
+      }
+    },
+    error: function () {
+      alertPopUp(
+        translate["error"],
+        translate["error_execution_proccess"],
+        "error",
+      );
+    },
+    complete: function () {
+      alertPopUp(translate["success"], translate["insert_register"], "success");
+      $("#modReceipt").modal("hide");
+      loadTableReceipt();
+    },
+  });
 }
 
 /**
@@ -149,26 +185,30 @@ function editReceipt(id) {
  * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
  */
 function modEditReceipt(id) {
-    var funcion = '../controller/receipt_controller.php';
-    $.ajax({
-        type: 'POST',
-        url: funcion,
-        data: { function: 'modEditReceipt', id: id },
-        cache: false,
-        success: function (data) {
-            sanitizeAndSetHTML('#formReceipt', data);
-        },
-        error: function () {
-            alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-        }
-    });
-    $('#modReceipt').modal('show');
-    return false;
+  var funcion = "../controller/receipt_controller.php";
+  $.ajax({
+    type: "POST",
+    url: funcion,
+    data: { function: "modEditReceipt", id: id },
+    cache: false,
+    success: function (data) {
+      sanitizeAndSetHTML("#formReceipt", data);
+    },
+    error: function () {
+      alertPopUp(
+        translate["error"],
+        translate["error_execution_proccess"],
+        "error",
+      );
+    },
+  });
+  $("#modReceipt").modal("show");
+  return false;
 }
 
 /**
  * Cierra el modal de creación/edición de recibos.
  */
 function closeModalReceipt() {
-    $('#modReceipt').modal('hide');
+  $("#modReceipt").modal("hide");
 }
