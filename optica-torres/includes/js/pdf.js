@@ -89,19 +89,24 @@ function newPDF(type_pdf, op) {
       var appointment_finish_date = $("#c_appointment_finish_date").val();
       var foot_signature = $("#c_foot_signature").val();
       var foot_signature_name = $("#c_foot_signature option:selected").text();
-      values["id_number"] = id_number;
-      values["name"] = name;
-      values["genre"] = genre;
-      values["city_name"] = city_name;
-      values["date"] = date;
-      values["appointment_start_date"] = appointment_start_date;
-      values["appointment_finish_date"] = appointment_finish_date;
-      values["foot_signature"] = foot_signature;
-      values["foot_signature_name"] = foot_signature_name;
+      
+      // Usar array indexado para garantizar orden
+      values[0] = id_number;
+      values[1] = name;
+      values[2] = genre;
+      values[3] = city_name;
+      values[4] = date;
+      values[5] = appointment_start_date;
+      values[6] = appointment_finish_date;
+      values[7] = foot_signature; // 5 partes separadas con {}
+      values[8] = "-"; // Placeholder
+      values[9] = "-";
+      values[10] = "-";
+      values[11] = "-";
+      values[12] = foot_signature_name;
+      
       if (
         date == "" ||
-        appointment_start_date == "" ||
-        appointment_finish_date == "" ||
         foot_signature == ""
       ) {
         alertPopUp(
@@ -139,36 +144,41 @@ function newPDF(type_pdf, op) {
       var c_recomendations = $("#c_recomendations").val();
       var foot_signature = $("#c_foot_signature").val();
       var foot_signature_name = $("#c_foot_signature option:selected").text();
-      values["id_number"] = id_number;
-      values["name"] = name;
-      values["genre"] = genre;
-      values["city_name"] = city_name;
-      values["date"] = date;
-      values["age"] = age;
-      values["uv_a_re"] = uv_a_re;
-      values["uv_a_le"] = uv_a_le;
-      values["uv_a_be"] = uv_a_be;
-      values["cv_a_re"] = cv_a_re;
-      values["cv_a_le"] = cv_a_le;
-      values["cv_a_be"] = cv_a_be;
-      values["fe_s_re"] = fe_s_re;
-      values["fe_s_le"] = fe_s_le;
-      values["fe_c_re"] = fe_c_re;
-      values["fe_c_le"] = fe_c_le;
-      values["fe_a_re"] = fe_a_re;
-      values["fe_a_le"] = fe_a_le;
-      values["ne_s_re"] = ne_s_re;
-      values["ne_s_le"] = ne_s_le;
-      values["d_re"] = d_re;
-      values["d_le"] = d_le;
-      values["d_complementary"] = d_complementary;
-      values["c_recomendations"] = c_recomendations;
-      values["foot_signature"] = foot_signature;
-      values["foot_signature_name"] = foot_signature_name;
+      
+      // Usar array indexado para garantizar orden
+      values[0] = id_number;
+      values[1] = name;
+      values[2] = genre;
+      values[3] = city_name;
+      values[4] = date;
+      values[5] = age;
+      values[6] = uv_a_re;
+      values[7] = uv_a_le;
+      values[8] = uv_a_be;
+      values[9] = cv_a_re;
+      values[10] = cv_a_le;
+      values[11] = cv_a_be;
+      values[12] = fe_s_re;
+      values[13] = fe_s_le;
+      values[14] = fe_c_re;
+      values[15] = fe_c_le;
+      values[16] = fe_a_re;
+      values[17] = fe_a_le;
+      values[18] = ne_s_re;
+      values[19] = ne_s_le;
+      values[20] = d_re;
+      values[21] = d_le;
+      values[22] = d_complementary;
+      values[23] = c_recomendations;
+      values[24] = foot_signature; // 5 partes separadas con {}
+      values[25] = "-"; // Placeholder
+      values[26] = "-";
+      values[27] = "-";
+      values[28] = "-";
+      values[29] = foot_signature_name;
+      
       if (
         date == "" ||
-        appointment_start_date == "" ||
-        appointment_finish_date == "" ||
         foot_signature == ""
       ) {
         alertPopUp(
@@ -202,32 +212,37 @@ function newPDF(type_pdf, op) {
       var c_recomendations = $("#c_recomendations").val();
       var foot_signature = $("#c_foot_signature").val();
       var foot_signature_name = $("#c_foot_signature option:selected").text();
-      values["id_number"] = id_number;
-      values["name"] = name;
-      values["genre"] = genre;
-      values["city_name"] = city_name;
-      values["date"] = date;
-      values["age"] = age;
-      values["fe_s_re"] = fe_s_re;
-      values["fe_s_le"] = fe_s_le;
-      values["fe_c_re"] = fe_c_re;
-      values["fe_c_le"] = fe_c_le;
-      values["fe_a_re"] = fe_a_re;
-      values["fe_a_le"] = fe_a_le;
-      values["ne_s_re"] = ne_s_re;
-      values["ne_s_le"] = ne_s_le;
-      values["d_re"] = d_re;
-      values["d_le"] = d_le;
-      values["d_complementary"] = d_complementary;
-      values["amsler_primer"] = amsler_primer;
-      values["dishihara_test"] = ishihara_test;
-      values["c_recomendations"] = c_recomendations;
-      values["foot_signature"] = foot_signature;
-      values["foot_signature_name"] = foot_signature_name;
+      
+      // Usar array indexado para garantizar orden
+      values[0] = id_number;
+      values[1] = name;
+      values[2] = genre;
+      values[3] = city_name;
+      values[4] = date;
+      values[5] = age;
+      values[6] = fe_s_re;
+      values[7] = fe_s_le;
+      values[8] = fe_c_re;
+      values[9] = fe_c_le;
+      values[10] = fe_a_re;
+      values[11] = fe_a_le;
+      values[12] = ne_s_re;
+      values[13] = ne_s_le;
+      values[14] = d_re;
+      values[15] = d_le;
+      values[16] = d_complementary;
+      values[17] = amsler_primer;
+      values[18] = ishihara_test;
+      values[19] = c_recomendations;
+      values[20] = foot_signature; // 5 partes separadas con {}
+      values[21] = "-"; // Placeholder
+      values[22] = "-";
+      values[23] = "-";
+      values[24] = "-";
+      values[25] = foot_signature_name;
+      
       if (
         date == "" ||
-        appointment_start_date == "" ||
-        appointment_finish_date == "" ||
         foot_signature == ""
       ) {
         alertPopUp(
