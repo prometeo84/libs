@@ -18,7 +18,7 @@ function readCity(provinceName, element) {
         data: { function: 'createDropDownCity', catalog_id: provinceName.value, provinceName: provinceName.selectedOptions[0].text },
         cache: false,
         beforeSend: function (xhr) {
-            if (provinceName == '') {
+            if (provinceName.value == '') {
                 alertPopUp(translate['advertice'], translate['catalogs_province_empty'], 'warning');
                 xhr.abort();
             }
