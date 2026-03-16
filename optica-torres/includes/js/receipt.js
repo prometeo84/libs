@@ -1,174 +1,229 @@
-/**
- * @file Gestiona la lógica de la interfaz de usuario para los recibos de pago.
- * Incluye funciones para cargar, crear, editar y guardar recibos.
- */
-
-// file deepcode ignore DOMXSS: Sanitize in Class
-/**
- * Abre un modal para crear un nuevo recibo.
- * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
- */
-function modReceipt() {
-    var funcion = '../controller/receipt_controller.php';
-    $.ajax({
-        type: 'POST',
-        url: funcion,
-        data: { function: 'modReceipt' },
-        cache: false,
-        success: function (data) {
-            sanitizeAndSetHTML('#formReceipt', data);
-        },
-        error: function () {
-            alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-        }
-    });
-    $('#modReceipt').modal('show');
-    return false;
-}
+// recipe.js - Autocomplete robusto para textareas de recetas
+/* Copiado del código proporcionado por el usuario. */
 
 /**
- * Carga la tabla de recibos para el paciente actualmente seleccionado.
+ * Carga la tabla de recetas para un paciente específico.
  * Realiza una llamada AJAX para obtener el HTML de la tabla y lo inserta en el DOM.
+ * Muestra un error si no se ha seleccionado un paciente.
  */
-function loadTableReceipt() {
-    var funcion = '../controller/receipt_controller.php';
-    var id = $('#patient_id').val();
-    if (id != '') {
-        $('#btnModNewReceipt').show();
+function loadRecipe() {
+    var patient_id = $('#patient_id').val();
+    if (patient_id != '') {
+        var funcion = '../controller/recipe_controller.php';
         $.ajax({
             type: 'POST',
             url: funcion,
-            data: { function: 'loadTableReceipt', patient_id: id, limit: 50, offset: 0, active_p: 1 },
+            data: { function: 'loadTableRecipe', patient_id: patient_id },
             cache: false,
+            success: function (data) {
+                sanitizeAndSetHTML('#tab-content-5', data);
+            },
             error: function () {
                 alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-            },
-            success: function (data) {
-                sanitizeAndSetHTML('#tab-content-7', data);
-            },
-            complete: function () {
-                alertPopUp(translate['success'], translate['information_success'], 'success');
             }
         });
     } else {
-        $('#btnReceipt').hide();
         $("#PatientTabs").load(location.href + " #PatientTabs");
         alertPopUp(translate['error'], translate['optometry_id_user'], 'error');
     }
 }
-
 /**
- * Guarda un nuevo recibo. Recopila los datos del formulario y los envía al servidor.
+ * Carga y muestra un modal con el contenido de una receta en formato PDF.
  */
-function saveReceipt() {
-    var funcion = '../controller/receipt_controller.php';
-    var patient_id = $('#patient_id').val();
-    var description = $('#r_description').val();
-    var branch_id = $('#r_branch').val();
-    var delivery_date = $('#r_delivery_date').val();
-    var retirement_date = $('#r_retirement_date').val();
-    var amount_paid = $('#r_amount_paid').val();
-    var values = {};
-    values['function'] = 'newReceipt';
-    values['patient_id'] = patient_id;
-    values['description'] = description;
-    values['branch_id'] = branch_id;
-    values['delivery_date'] = delivery_date;
-    values['retirement_date'] = retirement_date;
-    values['amount_paid'] = amount_paid;
+function loadRecipePDF(pdf_id, op) {
+    var funcion = '../controller/recipe_controller.php';
     $.ajax({
         type: 'POST',
         url: funcion,
-        data: values,
-        cache: false,
-        beforeSend: function (xhr) {
-            if (branch_id == '' || delivery_date == '' || amount_paid == '') {
-                alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
-                xhr.abort();
-                return false;
-            }
-        },
-        error: function () {
-            alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-        },
-        complete: function () {
-            alertPopUp(translate['success'], translate['insert_register'], 'success');
-            $('#modReceipt').modal('hide');
-            loadTableReceipt();
-        }
-    });
-}
-
-/**
- * Guarda los cambios de un recibo existente.
- * @param {string|number} id - El ID del recibo que se está editando.
- */
-function editReceipt(id) {
-    var funcion = '../controller/receipt_controller.php';
-    var patient_id = $('#patient_id').val();
-    var description = $('#r_description').val();
-    var branch_id = $('#r_branch').val();
-    var delivery_date = $('#r_delivery_date').val();
-    var retirement_date = $('#r_retirement_date').val();
-    var amount_paid = $('#r_amount_paid').val();
-    var values = {};
-    values['id'] = id;
-    values['function'] = 'editReceipt';
-    values['patient_id'] = patient_id;
-    values['description'] = description;
-    values['branch_id'] = branch_id;
-    values['delivery_date'] = delivery_date;
-    values['retirement_date'] = retirement_date;
-    values['amount_paid'] = amount_paid;
-    $.ajax({
-        type: 'POST',
-        url: funcion,
-        data: values,
-        cache: false,
-        beforeSend: function (xhr) {
-            if (branch_id == '' || delivery_date == '' || amount_paid == '') {
-                alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
-                xhr.abort();
-                return false;
-            }
-        },
-        error: function () {
-            alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-        },
-        complete: function () {
-            alertPopUp(translate['success'], translate['insert_register'], 'success');
-            $('#modReceipt').modal('hide');
-            loadTableReceipt();
-        }
-    });
-}
-
-/**
- * Abre un modal para editar un recibo existente, precargando sus datos.
- * @param {string|number} id - El ID del recibo a editar.
- * @returns {boolean} Retorna false para prevenir el comportamiento por defecto del evento.
- */
-function modEditReceipt(id) {
-    var funcion = '../controller/receipt_controller.php';
-    $.ajax({
-        type: 'POST',
-        url: funcion,
-        data: { function: 'modEditReceipt', id: id },
+        data: { function: 'modalRecipe', id: pdf_id, op: op },
         cache: false,
         success: function (data) {
-            sanitizeAndSetHTML('#formReceipt', data);
+            $('#modPDFDocument').modal('show');
+            sanitizeAndSetHTML('#formPDF', data);
         },
         error: function () {
             alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
         }
     });
-    $('#modReceipt').modal('show');
+}
+
+function openModalEmailAttachment(id) {
+    var funcion = '../controller/recipe_controller.php';
+    $.ajax({
+        type: 'POST',
+        url: funcion,
+        data: { function: 'modUploadEmailAttachment', id: id },
+        cache: false,
+        success: function (data) {
+            sanitizeAndSetHTML('#formUploadAttachment', data);
+        },
+        error: function () {
+            alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
+        }
+    });
+    $('#modUploadEmailAttachment').modal('show');
     return false;
 }
 
-/**
- * Cierra el modal de creación/edición de recibos.
- */
-function closeModalReceipt() {
-    $('#modReceipt').modal('hide');
+function uploadFileAttachment() {
+    var funcion = '../controller/recipe_controller.php';
+    var anamnesis_id = $('#anamnesis_id').val();
+    var form_data = new FormData();
+    var totalfiles = document.getElementById('files').files.length;
+    for (var index = 0; index < totalfiles; index++) {
+        form_data.append("files[]", document.getElementById('files').files[index]);
+        form_data.append("function", "sendMailAttachment");
+        form_data.append("recipe_anamnesis_id", anamnesis_id);
+    }
+    $.ajax({
+        type: 'POST',
+        url: funcion,
+        data: form_data,
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        beforeSend: function (xhr) {
+            if (form_data == '') {
+                alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
+                xhr.abort();
+                return false;
+            }
+        },
+        success: function () {
+            alertPopUp(translate['success'], translate['information_success'], 'success');
+            $('#modUploadEmailAttachment').modal('hide');
+        },
+        error: function (xhr) {
+            alertPopUp(translate['error'], xhr.responseText, 'error');
+        }
+    });
 }
+
+function closeModalEmailAttachment() {
+    $('#modUploadEmailAttachment').modal('hide');
+}
+
+$(document).ready(function () {
+    var mirror = $('<div id="autocomplete-mirror"></div>').css({
+        position: 'absolute',
+        left: -9999,
+        top: -9999,
+        whiteSpace: 'pre-wrap',
+        wordWrap: 'break-word',
+        visibility: 'hidden'
+    }).appendTo('body');
+
+    function getCaretCoordinates(element) {
+        var $element = $(element);
+        var position = $element.prop('selectionStart');
+        var text = $element.val().substring(0, position);
+        mirror.css({
+            'box-sizing': $element.css('box-sizing'),
+            'font-family': $element.css('font-family'),
+            'font-size': $element.css('font-size'),
+            'font-weight': $element.css('font-weight'),
+            'line-height': $element.css('line-height'),
+            'letter-spacing': $element.css('letter-spacing'),
+            'padding-top': $element.css('padding-top'),
+            'padding-right': $element.css('padding-right'),
+            'padding-bottom': $element.css('padding-bottom'),
+            'padding-left': $element.css('padding-left'),
+            'border-width': $element.css('border-width'),
+            'width': $element.width()
+        });
+        var sanitizedText = text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br />');
+        mirror.html(sanitizedText + '<span id="caret-marker"></span>');
+        var $marker = $('#caret-marker', mirror);
+        var markerPos = $marker.position();
+        var elementOffset = $element.offset();
+        return {
+            top: elementOffset.top + markerPos.top - $element.scrollTop(),
+            left: elementOffset.left + markerPos.left - $element.scrollLeft()
+        };
+    }
+
+    function setupAutocomplete(selector, catalogName) {
+        function split(val) {
+            return val.split(/,\s*/);
+        }
+        function extractLast(term) {
+            return split(term).pop().trim().split(' ').pop();
+        }
+        $(selector)
+            .on("keydown", function (event) {
+                if (event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active) {
+                    event.preventDefault();
+                }
+            })
+            .autocomplete({
+                minLength: 2,
+                source: function (request, response) {
+                    var term = extractLast(request.term);
+                    $.ajax({
+                        url: "../controller/autocomplete_controller.php",
+                        dataType: "json",
+                        data: {
+                            term: term,
+                            catalog: catalogName
+                        },
+                        success: function (data) {
+                            if (!data || data.length === 0) {
+                                
+                            } else {
+                                response(data);
+                            }
+                        },
+                        error: function () {
+                            response([{ label: "Error al buscar sugerencias", value: "" }]);
+                        }
+                    });
+                },
+                open: function () {
+                    var $input = $(this);
+                    var $widget = $input.autocomplete("widget");
+                    var coords = getCaretCoordinates($input[0]);
+                    $widget.position({
+                        of: document.body,
+                        my: "left top",
+                        at: "left+" + coords.left + " top+" + (coords.top + parseInt($input.css('font-size'), 10) + 2)
+                    });
+                    setTimeout(function () {
+                        var inputWidth = $input.outerWidth();
+                        var maxItemWidth = 0;
+                        $widget.find('li').each(function () {
+                            var $item = $(this);
+                            var $clone = $item.clone().css({ 'position': 'absolute', 'left': '-9999px', 'width': 'auto', 'white-space': 'nowrap' }).appendTo('body');
+                            var itemWidth = $clone.outerWidth();
+                            $clone.remove();
+                            if (itemWidth > maxItemWidth) { maxItemWidth = itemWidth; }
+                        });
+                        var finalWidth = Math.max(inputWidth, maxItemWidth);
+                        $widget.css('width', finalWidth + 'px');
+                    }, 0);
+                },
+                focus: function () { return false; },
+                select: function (event, ui) {
+                    if (!ui.item.value) { event.preventDefault(); return false; }
+                    var terms = split(this.value);
+                    var currentSegment = terms.pop();
+                    var words = currentSegment.trim().split(' ');
+                    words.pop();
+                    words.push(ui.item.value);
+                    var newSegment = words.join(' ');
+                    terms.push(newSegment);
+                    this.value = terms.join(", ");
+                    return false;
+                }
+            }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                if (item.value === "") { return $("<li>").text(item.label).appendTo(ul); }
+                var label = item.label;
+                var safeLabel = $("<div>").text(label).html();
+                var finalHtml = safeLabel.replace(/(Marca:|Genérico:)/gi, '<b>$1</b>');
+                return $("<li>").append('<div>' + finalHtml + '</div>').appendTo(ul);
+            };
+    }
+
+    $('body').on('focus', '#r_indications, #r_rp', function () {
+        setupAutocomplete(this, 'MEDICAMENTO_OFTALMOLOGIA');
+    });
+});
