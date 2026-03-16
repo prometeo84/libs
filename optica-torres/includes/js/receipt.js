@@ -35,14 +35,11 @@ function modReceipt() {
  * Realiza una llamada AJAX para obtener el HTML de la tabla y lo inserta en el DOM.
  */
 function loadTableReceipt() {
-  console.log("[DEBUG] loadTableReceipt() iniciando.");
   var funcion = "../controller/receipt_controller.php";
   var id = $("#patient_id").val();
-  console.log("[DEBUG] patient_id:", id);
-  
+
   if (id != "") {
     $("#btnModNewReceipt").show();
-    console.log("[DEBUG] Enviando AJAX a:", funcion);
     $.ajax({
       type: "POST",
       url: funcion,
@@ -54,9 +51,7 @@ function loadTableReceipt() {
         active_p: 1,
       },
       cache: false,
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.error("[DEBUG] Error en AJAX:", textStatus, errorThrown);
-        console.error("[DEBUG] Response:", jqXHR.responseText);
+      error: function () {
         alertPopUp(
           translate["error"],
           translate["error_execution_proccess"],
@@ -64,10 +59,7 @@ function loadTableReceipt() {
         );
       },
       success: function (data) {
-        console.log("[DEBUG] Respuesta recibida, longitud:", data.length);
-        console.log("[DEBUG] Primeros 500 chars:", data.substring(0, 500));
         sanitizeAndSetHTML("#tab-content-7", data);
-        console.log("[DEBUG] Contenido insertado en #tab-content-7");
       },
     });
   } else {
