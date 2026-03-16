@@ -12,13 +12,6 @@
  */
 function readCity(provinceName, element) {
   var funcion = "../controller/catalogs_controller.php";
-  
-  // DEBUG
-  console.log("=== readCity DEBUG ===");
-  console.log("provinceName.value:", provinceName.value);
-  console.log("provinceName.text:", provinceName.selectedOptions[0].text);
-  console.log("element:", element);
-  
   $.ajax({
     type: "POST",
     url: funcion,
@@ -39,13 +32,9 @@ function readCity(provinceName, element) {
       }
     },
     success: function (data) {
-      console.log("SUCCESS - Datos recibidos:", data);
-      console.log("SUCCESS - Longitud:", data.length);
-      console.log("SUCCESS - Target element:", "#" + element);
       sanitizeAndSetHTML("#" + element, data);
     },
     error: function (xhr, status) {
-      console.error("ERROR readCity:", xhr, status);
       alertPopUp(
         translate["error"],
         translate["error_execution_proccess"],
