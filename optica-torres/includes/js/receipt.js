@@ -35,7 +35,7 @@ function modReceipt() {
  * Realiza una llamada AJAX para obtener el HTML de la tabla y lo inserta en el DOM.
  */
 function loadTableReceipt() {
-  console.log("[DEBUG] loadTableReceipt() iniciando...");
+  console.log("[DEBUG] loadTableReceipt() iniciando.");
   var funcion = "../controller/receipt_controller.php";
   var id = $("#patient_id").val();
   console.log("[DEBUG] patient_id:", id);
