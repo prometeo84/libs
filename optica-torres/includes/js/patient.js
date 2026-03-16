@@ -490,6 +490,7 @@ function showDiv(tabName) {
       break;
     case "tab5":
       loadRecipe();
+      break;
     case "tab7":
       loadTableReceipt();
       break;
