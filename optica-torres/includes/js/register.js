@@ -18,12 +18,13 @@ function saveRegister() {
   var user_email = $('#email').val();
   var user_password = $('#password').val();
   var user_confirm_password = $('#confirm_password').val();
+  var user_id_number = $('#identification_number').val();
   var csrf = $('input[name="CSRFToken"]').val();
 
   $.ajax({
     type: 'POST',
     url: funcion,
-    data: { function: 'saveRegister', login: user_login, name: user_name, lastname: user_lastname, email: user_email, password: user_password, confirm_password: user_confirm_password, role: user_role, CSRFToken: csrf },
+    data: { function: 'saveRegister', login: user_login, name: user_name, lastname: user_lastname, identification_number: user_id_number, email: user_email, password: user_password, confirm_password: user_confirm_password, role: user_role, CSRFToken: csrf },
     cache: false,
     beforeSend: function () { $('#loading').show(); },
     success: function (data) {
