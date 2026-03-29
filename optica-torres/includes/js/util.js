@@ -278,8 +278,15 @@ var translate = {
  * previniendo ataques XSS.
  */
 const DOMPURIFY_CONFIG = {
-  ADD_TAGS: ['iframe', 'embed', 'html', 'head', 'title', 'link', 'meta', 'script', 'body', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'hr', 'p', 'td', 'tr', 'a', 'b', 'br', 'button', 'span', 'strong', 'area', 'img', 'picture', 'table', 'tbody', 'th', 'thead', 'tfoot', 'button', 'input', 'textarea', 'label', 'option', 'select'],
-  ADD_ATTR: ['src', 'type', 'width', 'height', 'frameborder', 'allowfullscreen', 'style', 'cellspacing', 'border', 'class', 'colspan', 'alt', 'onclick', 'onkeydown', 'onkeypress', 'onsubmit', 'onchange', 'onblur', 'onload', 'margin', 'padding']
+  ADD_TAGS: ['iframe', 'embed', 'html', 'head', 'title', 'link', 'meta', 'script', 'body',
+    'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'hr', 'p', 'td', 'tr',
+    'a', 'b', 'br', 'button', 'span', 'strong', 'area', 'img', 'picture', 'table',
+    'tbody', 'th', 'thead', 'tfoot', 'button', 'input', 'textarea', 'label', 'option',
+    'select'],
+  ADD_ATTR: ['src', 'type', 'width', 'height', 'frameborder',
+    'allowfullscreen', 'style', 'cellspacing', 'border', 'class', 'colspan', 'alt',
+    'onclick', 'onkeydown', 'onkeypress', 'onkeyup', 'onsubmit', 'onchange', 'onblur', 'onload',
+    'margin', 'padding']
 };
 
 /**
