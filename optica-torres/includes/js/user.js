@@ -1,6 +1,7 @@
 /**
- * @file Gestiona la lógica de la interfaz de usuario para la administración de usuarios.
- * Incluye funciones para cargar, editar, guardar, eliminar y reiniciar contraseñas de usuarios.
+ * @file Gestiona la lógica de la interfaz de usuario para la administración
+ * de usuarios. Incluye funciones para cargar, editar, guardar, eliminar y
+ * reiniciar contraseñas de usuarios.
  */
 
 /**
@@ -12,6 +13,8 @@ function editUser(id) {
   $('#modEditarUsuario .close').css('display', 'none');
   $('#user_id').val(id);
   var funcion = '../controller/user_controller.php';
+  var $btn = $('#btnGuardarEditarUsuario');
+  $btn.prop('disabled', true);
   $.ajax({
     type: 'POST',
     url: funcion,
@@ -27,9 +30,11 @@ function editUser(id) {
       $('#role_option').val('');
     },
     success: function (data) {
-      sanitizeAndSetHTML('#formEditUser', data)
+      sanitizeAndSetHTML('#formEditUser', data);
+      $btn.prop('disabled', false);
     },
     error: function () {
+      $btn.prop('disabled', false);
       alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
     }
   });
@@ -83,12 +88,13 @@ function saveUser() {
   var user_active = 1;
   var user_leader = 0;
   var id = $('#user_id').val();
-  var idUser = $("#idUser").val();
-  if (document.getElementById('user_active_' + idUser).checked == false) {
+  var idUser = $('#idUser').val();
+  var elActive = document.getElementById('user_active_' + idUser);
+  if (elActive && elActive.checked === false) {
     user_active = 0;
   }
   if (document.getElementById('user_leader_' + idUser)) {
-    if (document.getElementById('user_leader_' + idUser).checked == true) {
+    if (document.getElementById('user_leader_' + idUser).checked === true) {
       user_leader = 1;
     }
   }
@@ -107,7 +113,7 @@ function saveUser() {
   values['leader'] = user_leader;
   values['user_active'] = user_active;
   values['role'] = user_role_id;
-  if (name == '' || lastname == '' || id_number == '' || email == '' || user_role_id == '') {
+  if (!name || !lastname || !id_number || !email || !user_role_id) {
     alertPopUp(translate['advertice'], translate['required_fields'], 'warning');
     return false;
   } else {
