@@ -18,14 +18,14 @@ function saveRegister() {
   var user_email = $('#email').val();
   var user_password = $('#password').val();
   var user_confirm_password = $('#confirm_password').val();
+  var csrf = $('input[name="CSRFToken"]').val();
+
   $.ajax({
     type: 'POST',
     url: funcion,
-    data: { function: 'saveRegister', login: user_login, name: user_name, lastname: user_lastname, email: user_email, password: user_password, confirm_password: user_confirm_password, role: user_role },
+    data: { function: 'saveRegister', login: user_login, name: user_name, lastname: user_lastname, email: user_email, password: user_password, confirm_password: user_confirm_password, role: user_role, CSRFToken: csrf },
     cache: false,
-    beforeSend: function () {
-      $('#loading').show();
-    },
+    beforeSend: function () { $('#loading').show(); },
     success: function (data) {
       if (data != '') {
         $('#loading').hide();
@@ -38,10 +38,7 @@ function saveRegister() {
         alertPopUp(translate['success'], translate['insert_register'], 'success');
       }
     },
-    error: function () {
-      $('#loading').hide();
-      alertPopUp(translate['error'], translate['error_execution_proccess'], 'error');
-    }
+    error: function () { $('#loading').hide(); alertPopUp(translate['error'], translate['error_execution_proccess'], 'error'); }
   });
 }
 
@@ -53,5 +50,7 @@ function saveRegister() {
 $(document).ready(function () {
   $('#password').html('');
   $('#confirm_password').val('');
-  setupPasswordValidation('input[type=password]', '#submit');
+  if (typeof setupPasswordValidation === 'function') {
+    setupPasswordValidation('input[type=password]', '#submit');
+  }
 });
