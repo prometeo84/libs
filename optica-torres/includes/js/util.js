@@ -278,6 +278,7 @@ var translate = {
  * previniendo ataques XSS.
  */
 const DOMPURIFY_CONFIG = {
+  SANITIZE_DOM: false,
   ADD_TAGS: ['iframe', 'embed', 'html', 'head', 'title', 'link', 'meta', 'script', 'body',
     'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'hr', 'p', 'td', 'tr',
     'a', 'b', 'br', 'button', 'span', 'strong', 'area', 'img', 'picture', 'table',
